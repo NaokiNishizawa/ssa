@@ -6,14 +6,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/grayColor"
+    android:background="@color/colorGray"
     tools:context="com.study.ssa.MainActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:background="@color/whiteColor">
+        android:layout_height="wrap_content"
+        android:background="@color/colorWhite">
 
         <TextView
             android:id="@+id/titleText"
@@ -26,7 +25,7 @@
         <Button
             android:id="@+id/prevButton"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Prev"
             android:layout_alignParentLeft="true"
             android:layout_marginVertical="10dp"
@@ -36,7 +35,7 @@
         <Button
             android:id="@+id/nextButton"
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:text="Next"
             android:layout_alignParentRight="true"
             android:layout_marginVertical="10dp"
@@ -57,17 +56,17 @@
             android:layout_marginHorizontal="1dp"
             android:textAlignment="center"
             android:text="日"
-            android:background="@color/whiteColor"
-            android:textColor="@color/redColor"/>
+            android:background="@color/colorWhite"
+            android:textColor="@color/colorRed"/>
 
         <TextView
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_marginRight="1dp"
             android:layout_weight="1"
-            android:background="@color/whiteColor"
+            android:background="@color/colorWhite"
             android:text="月"
-            android:textColor="@color/blackColor"
+            android:textColor="@color/colorBlack"
             android:textAlignment="center"/>
 
         <TextView
@@ -77,8 +76,8 @@
             android:layout_marginRight="1dp"
             android:textAlignment="center"
             android:text="火"
-            android:textColor="@color/blackColor"
-            android:background="@color/whiteColor"/>
+            android:textColor="@color/colorBlack"
+            android:background="@color/colorWhite"/>
 
         <TextView
             android:layout_width="0dp"
@@ -87,8 +86,8 @@
             android:layout_marginRight="1dp"
             android:textAlignment="center"
             android:text="水"
-            android:textColor="@color/blackColor"
-            android:background="@color/whiteColor"/>
+            android:textColor="@color/colorBlack"
+            android:background="@color/colorWhite"/>
 
         <TextView
             android:layout_width="0dp"
@@ -97,8 +96,8 @@
             android:layout_marginRight="1dp"
             android:textAlignment="center"
             android:text="木"
-            android:textColor="@color/blackColor"
-            android:background="@color/whiteColor"/>
+            android:textColor="@color/colorBlack"
+            android:background="@color/colorWhite"/>
 
         <TextView
             android:layout_width="0dp"
@@ -107,8 +106,8 @@
             android:layout_marginRight="1dp"
             android:textAlignment="center"
             android:text="金"
-            android:textColor="@color/blackColor"
-            android:background="@color/whiteColor"/>
+            android:textColor="@color/colorBlack"
+            android:background="@color/colorWhite"/>
 
         <TextView
             android:layout_width="0dp"
@@ -117,8 +116,8 @@
             android:layout_marginRight="1dp"
             android:textAlignment="center"
             android:text="土"
-            android:textColor="@color/blueColor"
-            android:background="@color/whiteColor"/>
+            android:textColor="@color/colorBlue"
+            android:background="@color/colorWhite"/>
 
     </LinearLayout>
 
@@ -126,11 +125,43 @@
         android:id="@+id/calendarGridView"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="15"
+        android:layout_weight="2"
         android:horizontalSpacing="1dp"
         android:layout_marginLeft="1dp"
         android:numColumns="7"
         android:stretchMode="columnWidth"
         android:verticalSpacing="1dp"/>
+
+    <!-- TODO 予定表示部分 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"/>
+
+    <!-- ヘッダー -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:background="@color/colorWhite"
+        android:orientation="horizontal">
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/btn_shop"/>
+
+        <Button
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_marginRight="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/btn_timer_mode"/>
+
+    </LinearLayout>
+
 
 </LinearLayout>

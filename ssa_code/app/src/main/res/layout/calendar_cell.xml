@@ -35,7 +35,7 @@
                 android:layout_width="20dp"
                 android:layout_height="20dp"
                 android:layout_centerInParent="true"
-                android:src="@mipmap/timer"/>
+                android:src="@mipmap/skt_arerlt"/>
 
             <TextView
                 android:id="@+id/alarmCountText"
@@ -50,7 +50,7 @@
                 android:id="@+id/stopwatchIcon"
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/stopwatch"
+                android:src="@mipmap/skt_timer"
                 android:layout_centerInParent="true"
                 android:layout_below="@id/alarmIcon"/>
 

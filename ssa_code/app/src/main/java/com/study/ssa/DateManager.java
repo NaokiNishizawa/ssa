@@ -69,7 +69,7 @@ public class DateManager {
      */
     public boolean isToday(Date date) {
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.DD", Locale.US);
-        String currentDay = format.format(mCalendar.getTime());
+        String currentDay = format.format(Calendar.getInstance().getTime());
         if (currentDay.equals(format.format(date))){
             return true;
         }else {

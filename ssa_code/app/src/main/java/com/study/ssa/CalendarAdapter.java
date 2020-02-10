@@ -91,6 +91,8 @@ public class CalendarAdapter extends BaseAdapter {
         // 当日の場合は、当日マークを表示する
         if(mDateManager.isToday(dateArray.get(position))) {
             holder.todaMark.setVisibility(View.VISIBLE);
+        } else {
+            holder.todaMark.setVisibility(View.GONE);
         }
         return convertView;
     }
@@ -103,6 +105,16 @@ public class CalendarAdapter extends BaseAdapter {
     @Override
     public Object getItem(int position) {
         return null;
+    }
+
+    /**
+     * positionに設定されている日付を返す
+     * @param position
+     * @return 日付 yyyy-MM-dd
+     */
+    public String getItemDateText(int position) {
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        return format.format(dateArray.get(position));
     }
 
     //表示月を取得
