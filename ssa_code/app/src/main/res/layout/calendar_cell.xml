@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/dateText"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"/>
+
+    <!--ここに拡張可能-->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/dateText"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/todayMarkIcon"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:layout_gravity="center"
+            android:visibility="gone"
+            android:src="@mipmap/today_mark"/>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="center">
+
+            <!-- アラーム -->
+            <ImageView
+                android:id="@+id/alarmIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_centerInParent="true"
+                android:src="@mipmap/timer"/>
+
+            <TextView
+                android:id="@+id/alarmCountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="1"
+                android:layout_toRightOf="@id/alarmIcon"/>
+
+            <!-- ストップウォッチ -->
+            <ImageView
+                android:id="@+id/stopwatchIcon"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/stopwatch"
+                android:layout_centerInParent="true"
+                android:layout_below="@id/alarmIcon"/>
+
+            <TextView
+                android:id="@+id/stopwatchCountText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="1"
+                android:layout_toRightOf="@id/stopwatchIcon"
+                android:layout_below="@id/alarmIcon"/>
+
+        </RelativeLayout>
+
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>
