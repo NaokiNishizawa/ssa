@@ -1,4 +1,4 @@
-package com.study.ssa;
+package com.study.ssa.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.study.ssa.DateManager;
+import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 
 import java.text.SimpleDateFormat;

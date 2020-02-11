@@ -1,8 +1,6 @@
 package com.study.ssa;
 
-import android.content.DialogInterface;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -10,10 +8,16 @@ import android.widget.GridView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.study.ssa.Adapter.CalendarAdapter;
 import com.study.ssa.Dialog.RegisterDialogFragment;
+import com.study.ssa.Dialog.ScheduleListDialogFragment;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 
-import androidx.fragment.app.DialogFragment;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
@@ -68,26 +72,74 @@ public class MainActivity extends FragmentActivity implements RegisterDialogFrag
         mCalendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                parent.getItemAtPosition(position);
-                Toast.makeText(MainActivity.this, "clicked" + String.valueOf(position), Toast.LENGTH_SHORT).show();
-
-                FragmentManager manager = getSupportFragmentManager();
-                RegisterDialogFragment dialogFragment = new RegisterDialogFragment();
-                Bundle args = new Bundle();
-                args.putString(RegisterDialogFragment.KEY_SELECT_DAY,mCalendarAdapter.getItemDateText(position));
-                dialogFragment.setArguments(args);
-                dialogFragment.show(manager, "");
+                // 登録ダイアログ表示処理
+                ShowRegisterDialog(position);
             }
         });
 
         mCalendarGridView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this, "long clicked" + String.valueOf(position), Toast.LENGTH_SHORT).show();
+                // 予定一覧ダイアログ表示処理
+                ShowScheduleListDialog(position);
                 return true;
             }
         });
+
         mTitleText.setText(mCalendarAdapter.getTitle());
+    }
+
+    /**
+     * 登録ダイアログ表示処理
+     *
+     * @param position
+     */
+    private void ShowRegisterDialog(int position) {
+        FragmentManager manager = getSupportFragmentManager();
+        RegisterDialogFragment dialogFragment = new RegisterDialogFragment();
+
+        // ダイアログに必要な情報を渡す
+        Bundle args = new Bundle();
+        args.putString(RegisterDialogFragment.KEY_SELECT_DAY,mCalendarAdapter.getItemDateText(position));
+        dialogFragment.setArguments(args);
+
+        // 表示
+        dialogFragment.show(manager, "");
+    }
+
+    /**
+     * 予定一覧ダイアログ表示処理
+     *
+     * @param position
+     */
+    private void ShowScheduleListDialog(int position) {
+
+        // 予定が何もない場合は何も表示しない
+        String dayStr = mCalendarAdapter.getItemDateText(position);
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        Date date;
+        try {
+            date = format.parse(dayStr);
+        } catch (ParseException e) {
+            // エラーが起きた場合は何もせずreturn まず起こらない。
+            return;
+        }
+
+        if(0 == mManager.getScheduleItem(date).size()) {
+            return;
+        }
+
+        // 予定があるのでダイアログ表示
+        FragmentManager manager = getSupportFragmentManager();
+        ScheduleListDialogFragment dialogFragment = new ScheduleListDialogFragment();
+
+        // ダイアログに必要な情報を渡す
+        Bundle args = new Bundle();
+        args.putString(ScheduleListDialogFragment.KEY_DAY,dayStr);
+        dialogFragment.setArguments(args);
+
+        // 表示
+        dialogFragment.show(manager, "");
     }
 
     @Override

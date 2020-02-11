@@ -6,9 +6,12 @@
     <color name="colorGray">#777777</color>
     <color name="colorBlue">#0000FF</color>
     <color name="colorLightBlue">#AFEEEE</color>
-    <color name="colorRed">#F00</color>
+    <color name="colorRed">#FF0000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorBlack">#000</color>
     <color name="colorOrange">#FFA500</color>
     <color name="colorGold">#FFD700</color>
+    <color name="colorViolet">#EE82EE</color>
+    <color name="colorLimeGreen">#32CD32</color>
+
 </resources>

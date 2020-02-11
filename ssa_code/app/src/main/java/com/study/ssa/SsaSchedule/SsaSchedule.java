@@ -62,4 +62,16 @@ public class SsaSchedule {
     public void setMode(int mMode) {
         this.mMode = mMode;
     }
+
+    public SsaSchedule clone() {
+        SsaSchedule clone = new SsaSchedule();
+
+        clone.setSchedule(mSchedule);
+        clone.setStart(mStart);
+        clone.setEnd(mEnd);
+        clone.setContent(mContent);
+        clone.setMode(mMode);
+
+        return clone;
+    }
 }

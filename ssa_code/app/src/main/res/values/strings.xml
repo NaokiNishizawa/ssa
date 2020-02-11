@@ -10,4 +10,7 @@
     <!-- 登録ダイアログ -->
     <string name="before_notification">開始10分前に通知いたしますか？</string>
     <string name="do_register">登録</string>
+
+    <!-- 予定一覧ダイアログ -->
+    <string name="do_remove">REMOVE</string>
 </resources>

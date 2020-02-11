@@ -3,7 +3,9 @@ package com.study.ssa.Dialog;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.content.Context;
 import android.graphics.Color;
+import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -12,12 +14,15 @@ import androidx.fragment.app.DialogFragment;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
@@ -75,6 +80,9 @@ public class RegisterDialogFragment extends DialogFragment {
         super.onStart();
 
         //初期化処理
+
+        setDialogWidth();
+
         initTitleText();
 
         initContentEditText();
@@ -93,6 +101,37 @@ public class RegisterDialogFragment extends DialogFragment {
     private void initSchedule() {
         mSchedule = new SsaSchedule();
         mSchedule.setSchedule(mRegisterDayStr);
+    }
+
+    /**
+     * ダイアログの幅を設定する
+     */
+    private void setDialogWidth() {
+        // ダイアログの幅は画面の5分の3とする
+
+        WindowManager wm = (WindowManager)getActivity().getSystemService(Context.WINDOW_SERVICE);
+        Display disp = wm.getDefaultDisplay();
+
+        Point realSize = new Point();
+        disp.getRealSize(realSize);
+
+
+        LinearLayout dialog = getDialog().findViewById(R.id.regster_dialog_base_layout);
+        ViewGroup.LayoutParams params = dialog.getLayoutParams();
+
+        // Changes the height and width to the specified *pixels*
+        params.width = (realSize.x/5) * 3;
+        params.height = ViewGroup.LayoutParams.MATCH_PARENT;
+
+        dialog.setLayoutParams(params);
+    }
+
+    /**
+     * タイトル文字列の初期化
+     */
+    private void initTitleText() {
+        TextView title = getDialog().findViewById(R.id.register_day);
+        title.setText(mRegisterDayStr);
     }
 
     /**
@@ -117,14 +156,6 @@ public class RegisterDialogFragment extends DialogFragment {
                 mSchedule.setContent(s.toString());
             }
         });
-    }
-
-    /**
-     * タイトル文字列の初期化
-     */
-    private void initTitleText() {
-        TextView title = getDialog().findViewById(R.id.register_day);
-        title.setText(mRegisterDayStr);
     }
 
     /**
@@ -243,7 +274,9 @@ public class RegisterDialogFragment extends DialogFragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO 予定保存処理
+                // TODO 10分前予定保存処理
+
+                // 予定保存処理
                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
                 manager.addSchedule(mSchedule);
                 mOnDialogButtonClickListener.onRegisterButtonClick();

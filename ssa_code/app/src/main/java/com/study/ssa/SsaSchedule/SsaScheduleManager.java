@@ -75,6 +75,29 @@ public class SsaScheduleManager {
     }
 
     /**
+     * 引数でもらった日に登録されているアラームモードのスケジュールの一覧を取得する<br>
+     * [注意] 何も登録されていなかった場合はnullが返る
+     * @param date
+     * @return　アラームモードのスケジュールの一覧 or null
+     */
+    public List<SsaSchedule> getAlertScheduleItem(Date date) {
+        List<SsaSchedule> list = new ArrayList<>();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String dateStr = format.format(date);
+
+        for(SsaSchedule schedule: mSsaScheduleList) {
+            SsaSchedule addSchedule;
+            if((dateStr.equals(schedule.getSchedule())) && (SsaSchedule.MODE_ALERT == schedule.getMode())) {
+                addSchedule = schedule.clone();
+                list.add(addSchedule);
+            }
+        }
+
+        return list;
+    }
+
+    /**
      * 引数でもらった日に登録されているタイマーモードのスケジュール数を取得する
      * @param date
      * @return　タイマーモードのスケジュール数
@@ -91,6 +114,52 @@ public class SsaScheduleManager {
             }
         }
         return count;
+    }
+
+    /**
+     * 引数でもらった日に登録されているタイマーモードのスケジュールの一覧を取得する<br>
+     * [注意] 何も登録されていなかった場合はnullが返る
+     * @param date
+     * @return　タイマーモードのスケジュールの一覧 or null
+     */
+    public List<SsaSchedule> getTimerScheduleItem(Date date) {
+        List<SsaSchedule> list = new ArrayList<>();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String dateStr = format.format(date);
+
+        for(SsaSchedule schedule: mSsaScheduleList) {
+            SsaSchedule addSchedule;
+            if((dateStr.equals(schedule.getSchedule())) && (SsaSchedule.MODE_TIMER == schedule.getMode())) {
+                addSchedule = schedule.clone();
+                list.add(addSchedule);
+            }
+        }
+
+        return list;
+    }
+
+    /**
+     * 引数でもらった日に登録されているスケジュールの一覧を取得する(アラートもタイマーも含む)<br>
+     * [注意] 何も登録されていなかった場合はnullが返る
+     * @param date
+     * @return　スケジュールの一覧 or null
+     */
+    public List<SsaSchedule> getScheduleItem(Date date) {
+        List<SsaSchedule> list = new ArrayList<>();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String dateStr = format.format(date);
+
+        for(SsaSchedule schedule: mSsaScheduleList) {
+            SsaSchedule addSchedule;
+            if(dateStr.equals(schedule.getSchedule())) {
+                addSchedule = schedule.clone();
+                list.add(addSchedule);
+            }
+        }
+
+        return list;
     }
 
     /**

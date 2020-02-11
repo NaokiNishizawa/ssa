@@ -11,7 +11,7 @@ import java.util.Locale;
  * カレンダー日付管理クラス
  */
 public class DateManager {
-    Calendar mCalendar;
+    public Calendar mCalendar;
 
     public DateManager(){
         mCalendar = Calendar.getInstance();
