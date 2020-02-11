@@ -1,17 +1,18 @@
 package com.study.ssa.SsaSchedule;
 
+import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.util.Log;
 
-import com.study.ssa.DB.SsaOpenHelper;
-
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
+
+import com.study.ssa.DB.SsaOpenHelper;
 
 /**
  * 予定管理クラス
@@ -21,7 +22,7 @@ public class SsaScheduleManager {
 
     private static SsaScheduleManager instance = null;
 
-    /** 予定一覧 */
+    /** 予定一覧 予定が早い順になっている*/
     private List<SsaSchedule> mSsaScheduleList = null;
 
     /* SQL操作クラス */
@@ -51,6 +52,84 @@ public class SsaScheduleManager {
      */
     private void initDB(Context context) {
         mHelper = new SsaOpenHelper(context);
+        ReadDB();
+    }
+
+    /**
+     * 引数でもらった日に登録されているアラームモードのスケジュール数を取得する
+     * @param date
+     * @return　アラームモードのスケジュール数
+     */
+    public int getAlertScheduleCount(Date date) {
+        int count = 0;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String dateStr = format.format(date);
+
+        for(SsaSchedule schedule: mSsaScheduleList) {
+            if((dateStr.equals(schedule.getSchedule())) && (SsaSchedule.MODE_ALERT == schedule.getMode())) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 引数でもらった日に登録されているタイマーモードのスケジュール数を取得する
+     * @param date
+     * @return　タイマーモードのスケジュール数
+     */
+    public int getTimerScheduleCount(Date date) {
+        int count = 0;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        String dateStr = format.format(date);
+
+        for(SsaSchedule schedule: mSsaScheduleList) {
+            if((dateStr.equals(schedule.getSchedule())) && (SsaSchedule.MODE_TIMER == schedule.getMode())) {
+                count++;
+            }
+        }
+        return count;
+    }
+
+    /**
+     * 予定追加
+     * @param add
+     */
+    public void addSchedule(SsaSchedule add) {
+        mSsaScheduleList.add(add);
+
+        // DBへの書き込み
+        ContentValues values = new ContentValues();
+        values.put(SsaOpenHelper.COLUMN_NAME_SCHEDULE_DAY, add.getSchedule());
+        values.put(SsaOpenHelper.COLUMN_NAME_START, add.getStart());
+        values.put(SsaOpenHelper.COLUMN_NAME_END, add.getEnd());
+        values.put(SsaOpenHelper.COLUMN_NAME_CONTENT, add.getContent());
+        values.put(SsaOpenHelper.COLUMN_NAME_MODE, add.getMode());
+
+        mDB = mHelper.getWritableDatabase();
+        long ret;
+        try {
+            ret = mDB.insert(SsaOpenHelper.TABLE_NAME, null, values);
+        } finally {
+            mDB.close();
+        }
+        if (ret == -1) {
+            Log.e("error", "insert failed");
+        } else {
+            Log.e("error", "insert success");
+        }
+
+        // 再取得
+        ReadDB();
+    }
+
+    /**
+     * DBから全データを読み込みmSsaScheduleListに追加する
+     * mSsaScheduleListは予定が早い順に追加されている
+     */
+    private void ReadDB() {
 
         mDB = mHelper.getReadableDatabase();
 
@@ -74,44 +153,45 @@ public class SsaScheduleManager {
         mSsaScheduleList = new ArrayList<SsaSchedule>();
         Log.d("debug","*********** SQL Parse Start ***********");
         for (int i = 0; i < cursor.getCount(); i++) {
-            try {
-                Log.d("debug","i=" + String.valueOf(i));
-                SsaSchedule schedule = new SsaSchedule();
 
-                // String　→ Date
-                // 予定日
-                String dateStr = cursor.getString(0);
-                SimpleDateFormat format = new SimpleDateFormat("yyyy.MM.dd", Locale.US);
-                schedule.setSchedule(format.parse(dateStr));
+            Log.d("debug","i=" + String.valueOf(i));
+            SsaSchedule schedule = new SsaSchedule();
 
-                // 開始時間
-                String startStr = cursor.getString(1);
-                format = new SimpleDateFormat("yyyy.MM.dd hh:mm");
-                schedule.setStart(format.parse(startStr));
+            // String　→ Date
+            // 予定日
+            schedule.setSchedule(cursor.getString(0));
 
-                // 終了時間
-                String endStr = cursor.getString(2);
-                format = new SimpleDateFormat("yyyy.MM.dd hh:mm");
-                schedule.setStart(format.parse(endStr));
+            // 開始時間
+            schedule.setStart(cursor.getString(1));
 
-                // 内容
-                schedule.setContent(cursor.getString(3));
+            // 終了時間
+            schedule.setEnd(cursor.getString(2));
 
-                // モード
-                schedule.setMode(cursor.getInt(4));
+            // 内容
+            schedule.setContent(cursor.getString(3));
 
-                Log.d("debug","Schedule: " + schedule.getSchedule().toString()
-                 + " Start: " + schedule.getStart().toString() + " End: " + schedule.getEnd().toString()
-                 + " Content: " + schedule.getContent() + " mode: " + String.valueOf(schedule.getMode()));
+            // モード
+            schedule.setMode(cursor.getInt(4));
 
-                mSsaScheduleList.add(schedule);
-            } catch (ParseException e) {
-                Log.d("debug","parse error");
-            }
+            Log.d("debug","Schedule: " + schedule.getSchedule().toString()
+                    + " Start: " + schedule.getStart().toString() + " End: " + schedule.getEnd().toString()
+                    + " Content: " + schedule.getContent() + " mode: " + String.valueOf(schedule.getMode()));
+            mSsaScheduleList.add(schedule);
 
             cursor.moveToNext();
         }
+
         cursor.close();
         Log.d("debug","*********** SQL Parse End ***********");
+
+        // 最後にソートして終了
+        SortScheduleList();
+    }
+
+    /**
+     * mSsaScheduleListの内容を早い順にソートする
+     */
+    private void SortScheduleList() {
+        // TODO ソート処理
     }
 }

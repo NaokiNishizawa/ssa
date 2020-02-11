@@ -1,8 +1,13 @@
 <resources>
     <string name="app_name">スケジュール(仮)</string>
+
+    <!-- ホーム画面 -->
     <string name="plan_nothing">予定はありません</string>
     <string name="do_input_plan">予定を入力してください</string>
-    <string name="before_notification">開始10分前に通知いたしますか？</string>
     <string name="btn_shop">ショップ</string>
     <string name="btn_timer_mode">タイマーモード</string>
+
+    <!-- 登録ダイアログ -->
+    <string name="before_notification">開始10分前に通知いたしますか？</string>
+    <string name="do_register">登録</string>
 </resources>

@@ -8,35 +8,43 @@ import java.util.Date;
  */
 public class SsaSchedule {
 
-    private Date mSchedule; // 予定日
-    private Date mStart; // 開始時間
-    private Date mEnd; // 終了時間
+    /** モード：未選択 */
+    public static final int MODE_NOTHING = 0;
+    /** モード：アラート */
+    public static final int MODE_ALERT= 1;
+    /** モード：タイマー */
+    public static final int MODE_TIMER = 2;
+
+
+    private String mSchedule; // 予定日
+    private String mStart; // 開始時間
+    private String mEnd; // 終了時間
     private String mContent; // 内容
-    private int mMode; // モード
+    private int mMode = MODE_NOTHING; // モード
 
     // 各種セッター・ゲッター
-    public Date getSchedule() {
+    public String getSchedule() {
         return mSchedule;
     }
 
-    public void setSchedule(Date mSchedule) {
-        this.mSchedule = mSchedule;
+    public void setSchedule(String schedule) {
+        this.mSchedule = schedule;
     }
 
-    public Date getStart() {
+    public String getStart() {
         return mStart;
     }
 
-    public void setStart(Date mStart) {
-        this.mStart = mStart;
+    public void setStart(String start) {
+        this.mStart = start;
     }
 
-    public Date getEnd() {
+    public String getEnd() {
         return mEnd;
     }
 
-    public void setEnd(Date mEnd) {
-        this.mEnd = mEnd;
+    public void setEnd(String end) {
+        this.mEnd = end;
     }
 
     public String getContent() {

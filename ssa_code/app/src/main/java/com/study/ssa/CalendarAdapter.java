@@ -10,6 +10,8 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.study.ssa.SsaSchedule.SsaScheduleManager;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -25,10 +27,18 @@ public class CalendarAdapter extends BaseAdapter {
     private DateManager mDateManager;
     private LayoutInflater mLayoutInflater;
 
+    private SsaScheduleManager mManager;
+
     //カスタムセルを拡張したらここでWigetを定義
     private static class ViewHolder {
         public TextView dateText;
-        public ImageView todaMark;
+        public ImageView todayMark;
+
+        public ImageView alertMark;
+        public TextView alertCount;
+
+        public ImageView timerMark;
+        public TextView timerCount;
     }
 
     public CalendarAdapter(Context context){
@@ -36,6 +46,7 @@ public class CalendarAdapter extends BaseAdapter {
         mLayoutInflater = LayoutInflater.from(mContext);
         mDateManager = new DateManager();
         dateArray = mDateManager.getDays();
+        mManager = SsaScheduleManager.getInstance();
     }
 
     @Override
@@ -50,7 +61,14 @@ public class CalendarAdapter extends BaseAdapter {
             convertView = mLayoutInflater.inflate(R.layout.calendar_cell, null);
             holder = new ViewHolder();
             holder.dateText = convertView.findViewById(R.id.dateText);
-            holder.todaMark = convertView.findViewById(R.id.todayMarkIcon);
+            holder.todayMark = convertView.findViewById(R.id.today_mark_icon);
+
+            holder.alertMark = convertView.findViewById(R.id.alert_icon);
+            holder.alertCount = convertView.findViewById(R.id.alert_count_text);
+
+            holder.timerMark = convertView.findViewById(R.id.timer_icon);
+            holder.timerCount = convertView.findViewById(R.id.timer_count_text);
+
             convertView.setTag(holder);
         } else {
             holder = (ViewHolder)convertView.getTag();
@@ -90,9 +108,35 @@ public class CalendarAdapter extends BaseAdapter {
 
         // 当日の場合は、当日マークを表示する
         if(mDateManager.isToday(dateArray.get(position))) {
-            holder.todaMark.setVisibility(View.VISIBLE);
+            holder.todayMark.setVisibility(View.VISIBLE);
         } else {
-            holder.todaMark.setVisibility(View.GONE);
+            holder.todayMark.setVisibility(View.GONE);
+        }
+
+        // アラートに設定されている予定数を取得して１個以上ならアイコンとテキストを表示する
+        int alertCount = mManager.getAlertScheduleCount(dateArray.get(position));
+        if(0 != alertCount) {
+            // 1個以上ある場合はアイコンとテキストを表示する
+            holder.alertMark.setVisibility(View.VISIBLE);
+            holder.alertCount.setVisibility(View.VISIBLE);
+            holder.alertCount.setText(String.valueOf(alertCount));
+        } else {
+            // 0の場合はアイコンとテキストを非表示
+            holder.alertMark.setVisibility(View.INVISIBLE);
+            holder.alertCount.setVisibility(View.INVISIBLE);
+        }
+
+        // タイマーに設定されている予定数を取得して１個以上ならアイコンとテキストを表示する
+        int timerCount = mManager.getTimerScheduleCount(dateArray.get(position));
+        if(0 != timerCount) {
+            // 1個以上ある場合はアイコンとテキストを表示する
+            holder.timerMark.setVisibility(View.VISIBLE);
+            holder.timerCount.setVisibility(View.VISIBLE);
+            holder.timerCount.setText(String.valueOf(timerCount));
+        } else {
+            // 0の場合はアイコンとテキストを非表示
+            holder.timerMark.setVisibility(View.INVISIBLE);
+            holder.timerCount.setVisibility(View.INVISIBLE);
         }
         return convertView;
     }

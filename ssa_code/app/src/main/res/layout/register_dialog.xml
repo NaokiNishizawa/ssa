@@ -3,6 +3,9 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="250dp"
     android:layout_height="match_parent"
+    android:paddingTop="@dimen/small_margin"
+    android:paddingRight="@dimen/normal_margin"
+    android:paddingLeft="@dimen/normal_margin"
     android:background="@color/colorWhite"
     android:orientation="vertical">
 
@@ -15,7 +18,7 @@
         android:textSize="15dp"/>
 
     <EditText
-        android:id="@+id/content"
+        android:id="@+id/content_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/do_input_plan"/>
@@ -60,30 +63,67 @@
     </LinearLayout>
 
     <!-- アラート or タイマー -->
-    <RadioGroup
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/normal_margin"
         android:orientation="horizontal">
 
-        <RadioButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@mipmap/skt_arerlt"
-            android:button="@null"/>
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/alert_icon_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/skt_arerlt"
+                android:layout_gravity="center" />
+
+            <View
+                android:id="@+id/selecte_alert"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/normal_margin"
+                android:layout_marginRight="@dimen/normal_margin"
+                android:background="@color/colorOrange"/>
+        </LinearLayout>
 
         <TextView
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:layout_gravity="center"
             android:textSize="@dimen/text_normal_size"
+            android:gravity="center"
             android:textColor="@color/colorBlack"
             android:text="OR"/>
 
-        <RadioButton
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:background="@mipmap/skt_timer"
-            android:button="@null"/>
-    </RadioGroup>
+            android:layout_weight="2"
+            android:orientation="vertical">
+
+            <ImageButton
+                android:id="@+id/timer_icon_button"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@mipmap/skt_timer"
+                android:layout_gravity="center" />
+
+            <View
+                android:id="@+id/selected_timer"
+                android:layout_width="wrap_content"
+                android:layout_height="20dp"
+                android:layout_marginLeft="@dimen/normal_margin"
+                android:layout_marginRight="@dimen/normal_margin"
+                android:background="@color/colorOrange"/>
+        </LinearLayout>
+
+    </LinearLayout>
 
     <CheckedTextView
         android:id="@+id/before_notification_check"
@@ -91,15 +131,17 @@
         android:textSize="@dimen/text_normal_size"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:checked="false"
-        android:checkMark="@mipmap/check"/>
+        android:checkMark="?android:attr/textCheckMark"
+        android:checked="false" />
 
-    <!-- TODO 正しく作ること -->
+    <!-- 登録ボタン -->
     <Button
         android:id="@+id/register_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="登録する"/>
+        android:background="@color/colorGold"
+        android:textStyle="bold"
+        android:text="@string/do_register"/>
 
 </LinearLayout>

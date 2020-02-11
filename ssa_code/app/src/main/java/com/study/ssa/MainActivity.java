@@ -1,6 +1,8 @@
 package com.study.ssa;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,14 +13,11 @@ import android.widget.Toast;
 import com.study.ssa.Dialog.RegisterDialogFragment;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 
-import java.text.SimpleDateFormat;
-import java.util.Locale;
-
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
-public class MainActivity extends FragmentActivity {
+public class MainActivity extends FragmentActivity implements RegisterDialogFragment.OnButtonClickListener {
 
     private TextView mTitleText;
     private Button mPrevButton;
@@ -73,7 +72,7 @@ public class MainActivity extends FragmentActivity {
                 Toast.makeText(MainActivity.this, "clicked" + String.valueOf(position), Toast.LENGTH_SHORT).show();
 
                 FragmentManager manager = getSupportFragmentManager();
-                DialogFragment dialogFragment = new RegisterDialogFragment();
+                RegisterDialogFragment dialogFragment = new RegisterDialogFragment();
                 Bundle args = new Bundle();
                 args.putString(RegisterDialogFragment.KEY_SELECT_DAY,mCalendarAdapter.getItemDateText(position));
                 dialogFragment.setArguments(args);
@@ -89,5 +88,11 @@ public class MainActivity extends FragmentActivity {
             }
         });
         mTitleText.setText(mCalendarAdapter.getTitle());
+    }
+
+    @Override
+    public void onRegisterButtonClick() {
+        // 登録ダイアログ完了時コールバック adapterを更新する
+        mCalendarAdapter.notifyDataSetChanged();
     }
 }
