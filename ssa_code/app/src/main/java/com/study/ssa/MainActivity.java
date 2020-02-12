@@ -1,5 +1,7 @@
 package com.study.ssa;
 
+import android.content.ComponentName;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -7,7 +9,8 @@ import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.study.ssa.SsaSchedule.SsaSchedule;
+import com.study.ssa.Receiver.AlarmReceiver;
+import com.study.ssa.Receiver.BootReceiver;
 import com.study.ssa.UI.Adapter.CalendarAdapter;
 import com.study.ssa.UI.Dialog.RegisterDialogFragment;
 import com.study.ssa.UI.Dialog.ScheduleListDialogFragment;
@@ -32,13 +35,13 @@ public class MainActivity extends FragmentActivity
 
     private SsaScheduleManager mManager;
 
-    /** アラームに設定されているschedule ただし何も登録されていない場合はnull */
-    private SsaSchedule mAlarmSchedule;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Receiver初期化
+        initReceiver();
 
         // レイアウト初期化
         initLayout();
@@ -46,7 +49,26 @@ public class MainActivity extends FragmentActivity
         // DBから予定を取得する
         mManager = SsaScheduleManager.getInstance();
         mManager.init(getApplicationContext());
-        mAlarmSchedule = mManager.getNextSchedule();
+    }
+
+    /**
+     * 必要なReceiverを初期化する
+     */
+    private void initReceiver() {
+        // Receiverは明示的に有効にしないとうまく動作しないことがあるため、明示的に有効にする
+        // こうすることでアプリで無効にしない限り無効にならない。
+        // 現状は無効にしていないため、永久的に有効
+        ComponentName bootReceiver = new ComponentName(this, BootReceiver.class);
+        ComponentName alarmReceiver = new ComponentName(this, AlarmReceiver.class);
+        PackageManager pm = this.getPackageManager();
+
+        pm.setComponentEnabledSetting(bootReceiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
+
+        pm.setComponentEnabledSetting(alarmReceiver,
+                PackageManager.COMPONENT_ENABLED_STATE_ENABLED,
+                PackageManager.DONT_KILL_APP);
     }
 
     /**
@@ -152,8 +174,6 @@ public class MainActivity extends FragmentActivity
     public void onRegisterButtonClick() {
         // 登録ダイアログ完了時コールバック adapterを更新する
         mCalendarAdapter.notifyDataSetChanged();
-        mAlarmSchedule = mManager.getNextSchedule();
-        // TODO 以前設定したスケジュールと比較して変わっていた場合はアラームをキャンセルし新しいアラームを設定する処理
     }
 
     // ScheduleListDialog　コールバック
@@ -161,7 +181,5 @@ public class MainActivity extends FragmentActivity
     public void onDismiss() {
         // 予定一覧ダイアログdismiss時 adapterを更新する
         mCalendarAdapter.notifyDataSetChanged();
-        mAlarmSchedule = mManager.getNextSchedule();
-        // TODO 以前設定したスケジュールと比較して変わっていた場合はアラームをキャンセルし新しいアラームを設定する処理
     }
 }

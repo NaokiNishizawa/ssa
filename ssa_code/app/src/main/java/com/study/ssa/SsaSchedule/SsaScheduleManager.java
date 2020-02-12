@@ -15,6 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
+import com.study.ssa.AlarmManagerUtil;
 import com.study.ssa.DB.SsaOpenHelper;
 
 /**
@@ -193,24 +194,21 @@ public class SsaScheduleManager {
     }
 
     /**
-     * 次の予定を取得する<br>
-     * [注意] 予定がない場合はnullが返る
-     * @return 次の予定 or null
+     * 全ての予定を取得する<br>
+     *
+     * @return 予定一覧
      */
-    public SsaSchedule getNextSchedule() {
-        SsaSchedule nextSchedule = null;
-        if(0 != mSsaScheduleList.size()) {
-            nextSchedule = mSsaScheduleList.get(0);
-        }
-
-        return nextSchedule;
+    public List<SsaSchedule> getAllSchedule() {
+        return mSsaScheduleList;
     }
 
     /**
      * 予定追加
-     * @param add
+     *
+     * @param  context コンテキスト
+     * @param add 追加する予定
      */
-    public void addSchedule(SsaSchedule add) {
+    public void addSchedule(Context context, SsaSchedule add) {
         mSsaScheduleList.add(add);
 
         // DBへの書き込み
@@ -233,14 +231,19 @@ public class SsaScheduleManager {
         } else {
             Log.e("error", "insert success");
         }
+
+        // アラームにも追加
+        AlarmManagerUtil.setAlarm(context, add);
     }
 
     /**
      * 予定追加 & DBの再取得
-     * @param add
+     *
+     * @param  context コンテキスト
+     * @param add　追加する予定
      */
-    public void addScheduleAndReadDB(SsaSchedule add) {
-        addSchedule(add);
+    public void addScheduleAndReadDB(Context context, SsaSchedule add) {
+        addSchedule(context, add);
 
         // 再取得
         ReadDB();

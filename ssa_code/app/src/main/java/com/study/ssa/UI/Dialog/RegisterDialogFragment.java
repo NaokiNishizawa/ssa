@@ -287,7 +287,7 @@ public class RegisterDialogFragment extends DialogFragment {
 
                 // 予定保存処理
                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
-                manager.addScheduleAndReadDB(mSchedule);
+                manager.addScheduleAndReadDB(getContext(), mSchedule);
                 mOnDialogButtonClickListener.onRegisterButtonClick();
                 getDialog().dismiss();
             }

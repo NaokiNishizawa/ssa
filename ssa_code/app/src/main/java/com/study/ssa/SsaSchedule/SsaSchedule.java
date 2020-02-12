@@ -15,6 +15,19 @@ public class SsaSchedule {
     /** モード：タイマー */
     public static final int MODE_TIMER = 2;
 
+    /** intent key id */
+    public static final String INTENT_KEY_ID = "id";
+    /** intent key schedule */
+    public static final String INTENT_KEY_SCHEDULE = "schedule";
+    /** intent key start */
+    public static final String INTENT_KEY_START = "start";
+    /** intent key end */
+    public static final String INTENT_KEY_END = "end";
+    /** intent key  content*/
+    public static final String INTENT_KEY_CONTENT = "content";
+    /** intent key mode */
+    public static final String INTENT_KEY_MODE = "mode";
+
     private int mID; // ID
     private String mSchedule; // 予定日
     private String mStart; // 開始時間
