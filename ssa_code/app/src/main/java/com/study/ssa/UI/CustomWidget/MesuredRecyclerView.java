@@ -1,8 +1,11 @@
-package com.study.ssa;
+package com.study.ssa.UI.CustomWidget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
+
+import com.study.ssa.R;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 /**

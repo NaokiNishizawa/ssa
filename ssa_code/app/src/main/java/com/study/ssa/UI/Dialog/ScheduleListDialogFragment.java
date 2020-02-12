@@ -1,5 +1,6 @@
-package com.study.ssa.Dialog;
+package com.study.ssa.UI.Dialog;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -12,13 +13,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
-import com.study.ssa.Adapter.ScheduleListAdapter;
+import com.study.ssa.UI.Adapter.ScheduleListAdapter;
 import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
@@ -31,10 +31,16 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class ScheduleListDialogFragment extends DialogFragment {
 
+    public interface onScheduleListDialogListener {
+        public void onDismiss();
+    }
+
     public static final String KEY_DAY = "day";
 
     private String mDayStr;
     private SsaScheduleManager mManager;
+    private onScheduleListDialogListener mListener;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
@@ -55,6 +61,17 @@ public class ScheduleListDialogFragment extends DialogFragment {
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+
+        try {
+            this.mListener = (ScheduleListDialogFragment.onScheduleListDialogListener) activity;
+        } catch (ClassCastException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onStart() {
         super.onStart();
 
@@ -63,6 +80,12 @@ public class ScheduleListDialogFragment extends DialogFragment {
         setDialogWidth();
 
         initScheduleList();
+    }
+
+    @Override
+    public void onDetach () {
+        super.onDetach();
+        mListener.onDismiss();
     }
 
     /**
@@ -83,7 +106,7 @@ public class ScheduleListDialogFragment extends DialogFragment {
 
         // Changes the height and width to the specified *pixels*
         params.width = (realSize.x/5) * 3;
-        params.height = (realSize.y/10) * 8;
+        params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
 
         dialog.setLayoutParams(params);
     }

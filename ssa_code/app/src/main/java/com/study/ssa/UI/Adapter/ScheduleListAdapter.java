@@ -1,14 +1,12 @@
-package com.study.ssa.Adapter;
+package com.study.ssa.UI.Adapter;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
 import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaSchedule;
-import com.study.ssa.ViewHolder.ScheduleListViewHolder;
-
-import java.text.SimpleDateFormat;
+import com.study.ssa.SsaSchedule.SsaScheduleManager;
+import com.study.ssa.UI.ViewHolder.ScheduleListViewHolder;
 import java.util.List;
 
 import androidx.recyclerview.widget.RecyclerView;
@@ -19,6 +17,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListViewHolder> {
 
     private List<SsaSchedule> mList;
+    private SsaSchedule mItem;
 
     /**
      * コンストラクタ
@@ -37,21 +36,33 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListViewHo
 
     @Override
     public void onBindViewHolder(ScheduleListViewHolder holder, int position) {
-        SsaSchedule item = mList.get(position);
-        holder.mDayView.setText(item.getSchedule());
-        holder.mContentView.setText(item.getContent());
+        mItem = mList.get(position);
+        holder.mDayView.setText(mItem.getSchedule());
+        holder.mContentView.setText(mItem.getContent());
 
-        holder.mStartTimeView.setText(item.getStart().split(" ")[1]);
-        holder.mEndTimeView.setText(item.getEnd().split(" ")[1]);
+        holder.mStartTimeView.setText(mItem.getStart().split(" ")[1]);
+        holder.mEndTimeView.setText(mItem.getEnd().split(" ")[1]);
 
         // モードにあったアイコンボタンを表示する
-        if(SsaSchedule.MODE_ALERT == item.getMode()) {
+        if(SsaSchedule.MODE_ALERT == mItem.getMode()) {
             holder.mAlertImage.setVisibility(View.VISIBLE);
             holder.mTimerImage.setVisibility(View.GONE);
         } else {
             holder.mAlertImage.setVisibility(View.GONE);
             holder.mTimerImage.setVisibility(View.VISIBLE);
         }
+
+        holder.mRemoveButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // 予定を削除
+                SsaScheduleManager manager = SsaScheduleManager.getInstance();
+                manager.deleteScheduleAndReadDB(mItem);
+
+                mList.remove(mItem);
+                notifyDataSetChanged();
+            }
+        });
     }
 
     @Override

@@ -15,7 +15,7 @@ public class SsaSchedule {
     /** モード：タイマー */
     public static final int MODE_TIMER = 2;
 
-
+    private int mID; // ID
     private String mSchedule; // 予定日
     private String mStart; // 開始時間
     private String mEnd; // 終了時間
@@ -23,6 +23,15 @@ public class SsaSchedule {
     private int mMode = MODE_NOTHING; // モード
 
     // 各種セッター・ゲッター
+
+    public int getID() {
+        return mID;
+    }
+
+    public void setID(int id) {
+        this.mID = id;
+    }
+
     public String getSchedule() {
         return mSchedule;
     }
@@ -66,6 +75,7 @@ public class SsaSchedule {
     public SsaSchedule clone() {
         SsaSchedule clone = new SsaSchedule();
 
+        clone.setID(mID);
         clone.setSchedule(mSchedule);
         clone.setStart(mStart);
         clone.setEnd(mEnd);

@@ -1,6 +1,7 @@
-package com.study.ssa.ViewHolder;
+package com.study.ssa.UI.ViewHolder;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -19,6 +20,7 @@ public class ScheduleListViewHolder extends RecyclerView.ViewHolder{
     public TextView mEndTimeView;
     public ImageView mAlertImage;
     public ImageView mTimerImage;
+    public Button mRemoveButton;
     /**
      * コンストラクタ
      * @param itemView
@@ -32,5 +34,6 @@ public class ScheduleListViewHolder extends RecyclerView.ViewHolder{
         mEndTimeView = itemView.findViewById(R.id.schedule_end_time_text);
         mAlertImage = itemView.findViewById(R.id.schedule_alert_icon);
         mTimerImage = itemView.findViewById(R.id.schedule_timer_icon);
+        mRemoveButton = itemView.findViewById(R.id.remove_button);
     }
 }

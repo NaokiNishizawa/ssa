@@ -1,4 +1,4 @@
-package com.study.ssa.Dialog;
+package com.study.ssa.UI.Dialog;
 
 import android.app.Activity;
 import android.app.Dialog;
@@ -40,6 +40,7 @@ public class RegisterDialogFragment extends DialogFragment {
     }
 
     public static final String KEY_SELECT_DAY = "select_day";
+    private static final String DEFUALT_TIME = "00:00";
 
     private String mRegisterDayStr;
     private SsaSchedule mSchedule; // 予定データ保持クラス
@@ -156,6 +157,9 @@ public class RegisterDialogFragment extends DialogFragment {
                 mSchedule.setContent(s.toString());
             }
         });
+
+        // 初期値として""を登録しておく
+        mSchedule.setContent("");
     }
 
     /**
@@ -188,6 +192,8 @@ public class RegisterDialogFragment extends DialogFragment {
                 dialog.show();
             }
         });
+        // 初期値として00:00を登録しておく
+        mSchedule.setStart(mRegisterDayStr + " " + DEFUALT_TIME);
 
         // 終了時間
         final TextView endTimeText = getDialog().findViewById(R.id.end_time_text);
@@ -214,6 +220,9 @@ public class RegisterDialogFragment extends DialogFragment {
                 dialog.show();
             }
         });
+
+        // 初期値として00:00を登録しておく
+        mSchedule.setEnd(mRegisterDayStr + " " + DEFUALT_TIME);
     }
 
     /**
@@ -278,7 +287,7 @@ public class RegisterDialogFragment extends DialogFragment {
 
                 // 予定保存処理
                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
-                manager.addSchedule(mSchedule);
+                manager.addScheduleAndReadDB(mSchedule);
                 mOnDialogButtonClickListener.onRegisterButtonClick();
                 getDialog().dismiss();
             }

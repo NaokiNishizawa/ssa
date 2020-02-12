@@ -1,4 +1,4 @@
-package com.study.ssa.Adapter;
+package com.study.ssa.UI.Adapter;
 
 import android.content.Context;
 import android.graphics.Color;
