@@ -13,6 +13,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.LinearLayout;
 
+import com.study.ssa.SsaSchedule.SsaSchedule;
 import com.study.ssa.UI.Adapter.ScheduleListAdapter;
 import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
@@ -20,6 +21,7 @@ import com.study.ssa.SsaSchedule.SsaScheduleManager;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.fragment.app.DialogFragment;
@@ -29,7 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 /**
  * schedule一覧表示ダイアログ
  */
-public class ScheduleListDialogFragment extends DialogFragment {
+public class ScheduleListDialogFragment extends DialogFragment implements ScheduleListAdapter.onRemoveScheduleListener{
 
     public interface onScheduleListDialogListener {
         public void onDismiss();
@@ -38,6 +40,9 @@ public class ScheduleListDialogFragment extends DialogFragment {
     public static final String KEY_DAY = "day";
 
     private String mDayStr;
+    private Date mDate;
+    private List<SsaSchedule> mBeforeList;
+    private ScheduleListAdapter mAdapter;
     private SsaScheduleManager mManager;
     private onScheduleListDialogListener mListener;
 
@@ -56,6 +61,14 @@ public class ScheduleListDialogFragment extends DialogFragment {
         mDayStr = getArguments().getString(KEY_DAY);
 
         mManager = SsaScheduleManager.getInstance();
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try {
+            mDate = format.parse(mDayStr);
+            mBeforeList = mManager.getScheduleItem(mDate);
+        } catch (ParseException e) {
+            // 何もしない
+        }
 
         return dialog;
     }
@@ -76,15 +89,27 @@ public class ScheduleListDialogFragment extends DialogFragment {
         super.onStart();
 
         //初期化処理
-
         setDialogWidth();
-
         initScheduleList();
     }
 
     @Override
     public void onDetach () {
         super.onDetach();
+
+        // 画面を開いた際のデータ内容から編集された恐れがあるため、再登録する
+        for(SsaSchedule item: mBeforeList) {
+            mManager.deleteSchedule(getContext(), item);
+        }
+
+        List<SsaSchedule> afterList = mAdapter.getList();
+        for(SsaSchedule item: afterList) {
+            mManager.addSchedule(getContext(), item);
+        }
+
+        // 最後にReadDBする
+        mManager.ReadDB(getContext());
+
         mListener.onDismiss();
     }
 
@@ -117,21 +142,27 @@ public class ScheduleListDialogFragment extends DialogFragment {
     private void initScheduleList() {
         RecyclerView recyclerView = getDialog().findViewById(R.id.item_list);
 
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
-        try {
-            Date date = format.parse(mDayStr);
-            ScheduleListAdapter adapter = new ScheduleListAdapter(mManager.getScheduleItem(date));
+        if(null == mDate) {
+            return;
+        }
 
-            LinearLayoutManager llm = new LinearLayoutManager(getActivity());
+        mAdapter = new ScheduleListAdapter(getContext(), mManager.getScheduleItem(mDate), this);
 
-            recyclerView.setHasFixedSize(true);
+        LinearLayoutManager llm = new LinearLayoutManager(getActivity());
 
-            recyclerView.setLayoutManager(llm);
+        recyclerView.setHasFixedSize(true);
 
-            recyclerView.setAdapter(adapter);
+        recyclerView.setLayoutManager(llm);
 
-        } catch (ParseException e) {
-            //何もしない
+        recyclerView.setAdapter(mAdapter);
+    }
+
+    @Override
+    public void doRemoveSchedule() {
+        // Removeボタン押下時
+        if(0 == mManager.getScheduleItem(mDate).size()) {
+            // アイテムがなくなったのでダイアログを閉じる
+            getDialog().dismiss();
         }
     }
 }

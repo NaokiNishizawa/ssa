@@ -31,7 +31,7 @@ public class AlarmManagerUtil {
 
         // intentに必要な情報を詰める
         Intent intent = new Intent(context, AlarmReceiver.class);
-        intent.setType(schedule.getStart() + schedule.getEnd());
+        intent.setType(schedule.getStart() + schedule.getEnd() + schedule.getContent());
         intent.putExtra(SsaSchedule.INTENT_KEY_ID, schedule.getID());
         intent.putExtra(SsaSchedule.INTENT_KEY_SCHEDULE, schedule.getSchedule());
         intent.putExtra(SsaSchedule.INTENT_KEY_START, schedule.getStart());
@@ -57,5 +57,24 @@ public class AlarmManagerUtil {
 
         // Dozeモードに入っていてもsetAlarmClockすることで眠りから起こすことができる。
         alarmMgr.setAlarmClock(new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), null), alarmIntent);
+    }
+
+    /**
+     * アラームの削除
+     *
+     * @param context　コンテキスト
+     * @param schedule　削除対象の予定
+     */
+    public static void deleteAlarm(Context context, SsaSchedule schedule) {
+        AlarmManager alarmMgr = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
+        if(null == alarmMgr) {
+            return;
+        }
+
+        Intent intent = new Intent(context, AlarmReceiver.class);
+        intent.setType(schedule.getStart() + schedule.getEnd() + schedule.getContent());
+        PendingIntent alarmIntent = PendingIntent.getBroadcast(context, 0, intent, 0);
+
+        alarmMgr.cancel(alarmIntent);
     }
 }

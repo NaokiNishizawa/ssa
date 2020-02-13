@@ -2,10 +2,12 @@ package com.study.ssa.UI.ViewHolder;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.study.ssa.R;
+import com.study.ssa.SsaSchedule.SsaSchedule;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -14,8 +16,9 @@ import androidx.recyclerview.widget.RecyclerView;
  */
 public class ScheduleListViewHolder extends RecyclerView.ViewHolder{
 
+    public SsaSchedule mSchedule;
     public TextView mDayView;
-    public TextView mContentView;
+    public EditText mContentView;
     public TextView mStartTimeView;
     public TextView mEndTimeView;
     public ImageView mAlertImage;

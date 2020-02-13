@@ -56,7 +56,7 @@ public class SsaScheduleManager {
      */
     private void initDB(Context context) {
         mHelper = new SsaOpenHelper(context);
-        ReadDB();
+        ReadDB(context);
     }
 
     /**
@@ -169,9 +169,11 @@ public class SsaScheduleManager {
     /**
      * 予定を削除する
      *
-     * @param delete
+     * @param context コンテキスト
+     * @param delete　削除する予定
      */
-    public void deleteSchedule(SsaSchedule delete) {
+    public void deleteSchedule(Context context, SsaSchedule delete) {
+        Log.d("debug", "deleteSchedule");
         mDB.beginTransaction();
         try {
             mDB.delete(SsaOpenHelper.TABLE_NAME, SsaOpenHelper._ID + "=?", new String[]{String.valueOf(delete.getID())});
@@ -179,18 +181,22 @@ public class SsaScheduleManager {
         } finally {
             mDB.endTransaction();
         }
+
+        // アラームを削除
+        AlarmManagerUtil.deleteAlarm(context, delete);
     }
 
     /**
      * 予定を削除 & DBの再取得
      *
-     * @param delete
+     * @param context コンテキスト
+     * @param delete　削除する予定
      */
-    public void deleteScheduleAndReadDB(SsaSchedule delete) {
-        deleteSchedule(delete);
+    public void deleteScheduleAndReadDB(Context context, SsaSchedule delete) {
+        deleteSchedule(context, delete);
 
         // 再取得
-        ReadDB();
+        ReadDB(context);
     }
 
     /**
@@ -246,15 +252,17 @@ public class SsaScheduleManager {
         addSchedule(context, add);
 
         // 再取得
-        ReadDB();
+        ReadDB(context);
     }
 
     /**
      * DBから全データを読み込みmSsaScheduleListに追加する<br>
      * mSsaScheduleListは予定が早い順に追加されている<br>
      * [注意] ソートなどを行っているため呼び出しは必要最小限にすること
+     *
+     * @param context コンテキスト
      */
-    private void ReadDB() {
+    public void ReadDB(Context context) {
 
         mDB = mHelper.getReadableDatabase();
 
@@ -315,7 +323,7 @@ public class SsaScheduleManager {
         Log.d("debug","*********** SQL Parse End ***********");
 
         // 本日より古い予定は全て削除する
-        removeOldSchedule();
+        removeOldSchedule(context);
 
         // 最後にソートして終了
         SortScheduleList();
@@ -323,8 +331,10 @@ public class SsaScheduleManager {
 
     /**
      * 現在より古い予定は全て削除する
+     *
+     * @param context コンテキスト
      */
-    private void removeOldSchedule() {
+    private void removeOldSchedule(Context context) {
         ArrayList<SsaSchedule> futureScheduleList = new ArrayList<>();
 
         printSsaScheduleList(mSsaScheduleList); // for debug
@@ -350,7 +360,7 @@ public class SsaScheduleManager {
 
                 if(-1 == scheduleDate.compareTo(today)) {
                     // 古いデータのためDBへの削除処理
-                    deleteSchedule(schedule);
+                    deleteSchedule(context, schedule);
                 } else if (0 == scheduleDate.compareTo(today)) {
                     // 本日の予定の場合は、開始時間が現在時刻よりも古い場合は削除
                     // 本来はDateクラスのcompareToで比較したいが、現在時刻より過去のものも1を返すため自力で比較している
@@ -369,7 +379,7 @@ public class SsaScheduleManager {
                         futureScheduleList.add(schedule);
                     } else {
                         // 古いデータのためDBへの削除処理
-                        deleteSchedule(schedule);
+                        deleteSchedule(context, schedule);
                     }
                 } else {
                     // 未来の予定

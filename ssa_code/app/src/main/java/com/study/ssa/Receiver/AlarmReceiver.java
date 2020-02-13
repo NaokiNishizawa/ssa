@@ -3,9 +3,8 @@ package com.study.ssa.Receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.widget.Toast;
-
-import com.study.ssa.MainActivity;
+import android.os.PowerManager;
+import android.util.Log;
 
 /**
  * Alarmによる通知を受け取るReceiver
@@ -13,10 +12,19 @@ import com.study.ssa.MainActivity;
 public class AlarmReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
-        // TODO 処理
+        // 処理
+        PowerManager pm = (PowerManager) context.getSystemService(Context.POWER_SERVICE);
+        if(pm.isInteractive()) {
+            // 画面ON時
+            Log.d("debug", "SCREEN_ON");
+        } else {
+            // 画面OFF時
+            Log.d("debug", "SCREEN_OFF");
+        }
+
         Intent startIntent =new Intent();
-        intent.setClassName(context.getPackageName(), context.getPackageName() + ".MainActivity");
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        context.startActivity(intent);
+        startIntent.setClassName(context.getPackageName(), context.getPackageName() + ".MainActivity");
+        startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        context.startActivity(startIntent);
     }
 }
