@@ -15,7 +15,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 
-import com.study.ssa.AlarmManagerUtil;
+import com.study.ssa.Util.AlarmManagerUtil;
 import com.study.ssa.DB.SsaOpenHelper;
 
 /**

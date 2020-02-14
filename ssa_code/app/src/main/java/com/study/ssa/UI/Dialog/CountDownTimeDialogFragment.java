@@ -42,6 +42,7 @@ public class CountDownTimeDialogFragment extends BaseTimerDialogFragment {
     protected void countFinish() {
         if((0 == mHour) && (0 == mMin) && (0 == mSec)) {
             getDialog().dismiss();
+            return;
         }
 
         // 残り時間を計算

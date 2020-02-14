@@ -9,6 +9,7 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.study.ssa.Receiver.AlarmReceiver;
 import com.study.ssa.Receiver.BootReceiver;
@@ -20,6 +21,7 @@ import com.study.ssa.UI.Dialog.RegisterDialogFragment;
 import com.study.ssa.UI.Dialog.ScheduleListDialogFragment;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 import com.study.ssa.UI.Dialog.BaseTimerDialogFragment;
+import com.study.ssa.Util.SharedPreferencesUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -274,10 +276,13 @@ public class MainActivity extends FragmentActivity
     // TimerDialog　コールバック
     @Override
     public void onFinish() {
+
+        // ダイアログは処理し終えたので初期化
         mIsCalledReceiver = false;
         mTimerDialog = null;
-        Log.d("debug", "call onFinish");
 
-        // TODO 処理
+        // TODO 獲得金額を取得して更新
+        int money = SharedPreferencesUtil.getMoneyValue(this);
+        Toast.makeText(this, "取得金額: " + String.valueOf(money), Toast.LENGTH_SHORT).show();
     }
 }

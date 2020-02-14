@@ -3,14 +3,12 @@ package com.study.ssa.Receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.util.Log;
 
-import com.study.ssa.AlarmManagerUtil;
+import com.study.ssa.Util.AlarmManagerUtil;
 import com.study.ssa.SsaSchedule.SsaSchedule;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 
 import java.util.List;
-import java.util.Locale;
 
 /**
  * 端末再起動時に発行されるReceiver<br>

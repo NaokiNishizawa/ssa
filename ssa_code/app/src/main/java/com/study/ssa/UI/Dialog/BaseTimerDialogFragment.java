@@ -18,6 +18,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.study.ssa.R;
+import com.study.ssa.Util.SharedPreferencesUtil;
 import com.study.ssa.UI.CustomWidget.ChartView;
 
 import java.util.Timer;
@@ -239,7 +240,8 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
         mGetMoney = mGetMoney + ONCE_GET_MONEY;
         mGetMoneyText.setText(String.valueOf(mGetMoney) + "$");
 
-        // TODO 賞金追加処理
+        // 賞金を保存する
+        SharedPreferencesUtil.addMoneyValue(getContext(), ONCE_GET_MONEY);
     }
 
     /**
@@ -299,7 +301,7 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
                     }
 
                     mCount++;
-                    if(FIFTEENTH_COUNT == mCount) {
+                    if(5 == mCount) {
                         addMoney();
                         mCount = 0;
                     }

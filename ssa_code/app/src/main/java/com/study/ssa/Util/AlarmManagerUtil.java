@@ -1,4 +1,4 @@
-package com.study.ssa;
+package com.study.ssa.Util;
 
 import android.app.AlarmManager;
 import android.app.PendingIntent;
