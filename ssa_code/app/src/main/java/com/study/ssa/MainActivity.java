@@ -15,6 +15,7 @@ import com.study.ssa.UI.Adapter.CalendarAdapter;
 import com.study.ssa.UI.Dialog.RegisterDialogFragment;
 import com.study.ssa.UI.Dialog.ScheduleListDialogFragment;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
+import com.study.ssa.UI.Dialog.BaseTimerDialogFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -25,7 +26,7 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends FragmentActivity
-        implements RegisterDialogFragment.OnButtonClickListener, ScheduleListDialogFragment.onScheduleListDialogListener {
+        implements RegisterDialogFragment.OnButtonClickListener, ScheduleListDialogFragment.onScheduleListDialogListener, BaseTimerDialogFragment.OnFinishClickListener {
 
     private TextView mTitleText;
     private Button mPrevButton;
@@ -45,6 +46,9 @@ public class MainActivity extends FragmentActivity
 
         // レイアウト初期化
         initLayout();
+
+        // ヘッダーView群の初期化
+        initHeaderView();
 
         // DBから予定を取得する
         mManager = SsaScheduleManager.getInstance();
@@ -117,6 +121,22 @@ public class MainActivity extends FragmentActivity
     }
 
     /**
+     * HeaderView群の初期化
+     */
+    private void initHeaderView() {
+        Button timerModeButton = findViewById(R.id.timer_mode_button);
+        timerModeButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // タイマーモードダイアログを表示する
+                FragmentManager manager = getSupportFragmentManager();
+                BaseTimerDialogFragment dialogFragment = new BaseTimerDialogFragment();
+                dialogFragment.show(manager, "");
+            }
+        });
+    }
+
+    /**
      * 登録ダイアログ表示処理
      *
      * @param position
@@ -181,5 +201,11 @@ public class MainActivity extends FragmentActivity
     public void onDismiss() {
         // 予定一覧ダイアログdismiss時 adapterを更新する
         mCalendarAdapter.notifyDataSetChanged();
+    }
+
+    // TimerDialo　コールバック
+    @Override
+    public void onFinish() {
+        // TODO 処理
     }
 }

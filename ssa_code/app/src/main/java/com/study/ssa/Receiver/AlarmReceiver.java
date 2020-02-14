@@ -20,6 +20,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         } else {
             // 画面OFF時
             Log.d("debug", "SCREEN_OFF");
+            return;
         }
 
         Intent startIntent =new Intent();

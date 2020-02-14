@@ -13,4 +13,12 @@
 
     <!-- 予定一覧ダイアログ -->
     <string name="do_remove">REMOVE</string>
+
+    <!-- タイマーモードダイアログ -->
+    <string name="remaining_time">残り時間</string>
+    <string name="progress_rate">%</string>
+    <string name="fifteenth_minutes_passage">15分経過ごとに10$</string>
+    <string name="retirement">リタイア</string>
+    <string name="get_confirm">現在取得確定</string>
+    <string name="get_money">$</string>
 </resources>

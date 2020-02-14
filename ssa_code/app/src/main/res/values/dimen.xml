@@ -1,7 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="text_normal_size">20dp</dimen>
+    <dimen name="text_normal_size">20sp</dimen>
+    <dimen name="text_large_size">40sp</dimen>
     <dimen name="normal_margin">10dp</dimen>
     <dimen name="small_margin">5dp</dimen>
-    <dimen name="small_text_size">15dp</dimen>
+    <dimen name="small_text_size">15sp</dimen>
+    <dimen name="cycle_width">150dp</dimen>
+    <dimen name="cycle_height">150dp</dimen>
 </resources>
