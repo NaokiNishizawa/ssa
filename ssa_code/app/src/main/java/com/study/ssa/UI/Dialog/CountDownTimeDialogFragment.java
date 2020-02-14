@@ -9,6 +9,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 /**
  * カウントダウン用 タイマーダイアログ
@@ -35,7 +36,7 @@ public class CountDownTimeDialogFragment extends BaseTimerDialogFragment {
     protected void initChildLayout() {
         // 時間差を計算
         CalculateDaysDifference();
-        UpdateTime(mHour, mMin, mSec);
+        updateTime(mHour, mMin, mSec);
     }
 
     @Override
@@ -54,7 +55,7 @@ public class CountDownTimeDialogFragment extends BaseTimerDialogFragment {
      * 時間差を計算する
      */
     private void CalculateDaysDifference() {
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
 
         try {
             // From
@@ -93,7 +94,7 @@ public class CountDownTimeDialogFragment extends BaseTimerDialogFragment {
 
         int progress = 100 - (int) (result * 100);
 
-        UpdateProgress(progress);
+        updateProgress(progress);
     }
 
     /**
@@ -107,7 +108,7 @@ public class CountDownTimeDialogFragment extends BaseTimerDialogFragment {
         }
 
         // テキスト更新
-        UpdateTime(mHour, mMin, mSec);
+        updateTime(mHour, mMin, mSec);
     }
 
     /**

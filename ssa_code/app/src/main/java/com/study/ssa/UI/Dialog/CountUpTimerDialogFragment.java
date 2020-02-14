@@ -47,7 +47,7 @@ public class CountUpTimerDialogFragment extends BaseTimerDialogFragment {
         }
 
         // テキスト更新処理
-        UpdateTime(mHour, mMin, mSec);
+        updateTime(mHour, mMin, mSec);
     }
 
     /**

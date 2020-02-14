@@ -130,9 +130,11 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListViewHo
         if(SsaSchedule.MODE_ALERT == item.getMode()) {
             holder.mAlertImage.setVisibility(View.VISIBLE);
             holder.mTimerImage.setVisibility(View.GONE);
-        } else {
+        } else if(SsaSchedule.MODE_TIMER == item.getMode()) {
             holder.mAlertImage.setVisibility(View.GONE);
             holder.mTimerImage.setVisibility(View.VISIBLE);
+        } else {
+            // 何もしない
         }
 
         holder.mRemoveButton.setOnClickListener(new View.OnClickListener() {

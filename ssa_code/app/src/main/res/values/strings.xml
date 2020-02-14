@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">スケジュール(仮)</string>
+    <string name="channel_name">ssa channel</string>
+    <string name="channel_description">ssa channel description</string>
 
     <!-- ホーム画面 -->
     <string name="plan_nothing">予定はありません</string>

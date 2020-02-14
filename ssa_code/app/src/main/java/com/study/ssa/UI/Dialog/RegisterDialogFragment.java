@@ -1,6 +1,5 @@
 package com.study.ssa.UI.Dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
@@ -20,6 +19,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
+import android.widget.CheckedTextView;
 import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
@@ -44,6 +44,7 @@ public class RegisterDialogFragment extends DialogFragment {
 
     private String mRegisterDayStr;
     private SsaSchedule mSchedule; // 予定データ保持クラス
+    private boolean mIsNotificationTenMin = false; // 10分前に通知するかを表すflag
     private OnButtonClickListener mOnDialogButtonClickListener;
 
     @Override
@@ -91,6 +92,8 @@ public class RegisterDialogFragment extends DialogFragment {
         initRangeText();
 
         initIconButton();
+
+        initNotificationButton();
 
         // 登録ボタン
         initRegisterButton();
@@ -276,6 +279,21 @@ public class RegisterDialogFragment extends DialogFragment {
     }
 
     /**
+     * 10分前に通知するチェックボタンの初期化処理
+     */
+    private void initNotificationButton() {
+        mIsNotificationTenMin = false; //デフォルトでは事前通知はなし
+        final CheckedTextView checkedTextView = getDialog().findViewById(R.id.before_notification_check);
+        checkedTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                checkedTextView.toggle();
+                mIsNotificationTenMin = !mIsNotificationTenMin;
+            }
+        });
+     }
+
+    /**
      * 登録ボタン初期化
      */
     private void initRegisterButton() {
@@ -283,11 +301,17 @@ public class RegisterDialogFragment extends DialogFragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO 10分前予定保存処理
-
                 // 予定保存処理
                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
+
+                if(mIsNotificationTenMin) {
+                    // 10分前予定保存処理
+                    SsaSchedule notification = manager.createNotificationSchedule(mSchedule);
+                    manager.addSchedule(getContext(), notification);
+                }
+
                 manager.addScheduleAndReadDB(getContext(), mSchedule);
+
                 mOnDialogButtonClickListener.onRegisterButtonClick();
                 getDialog().dismiss();
             }

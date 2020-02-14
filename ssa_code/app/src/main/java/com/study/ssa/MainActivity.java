@@ -165,8 +165,7 @@ public class MainActivity extends FragmentActivity
         shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO debugコード
-                ShowCountDownTimerDialog(mManager.getNextSchedule());
+                // TODO ショップ
             }
         });
     }

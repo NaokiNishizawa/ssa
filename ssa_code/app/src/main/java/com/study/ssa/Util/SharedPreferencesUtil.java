@@ -53,7 +53,7 @@ public class SharedPreferencesUtil {
      * @param context　コンテキスト
      * @param decreaseMoney 減少金額
      */
-    public static final void DecreaseMoneyValue(Context context, int decreaseMoney) {
+    public static final void decreaseMoneyValue(Context context, int decreaseMoney) {
         int current = getMoneyValue(context);
         setMoneyValue(context, (current - decreaseMoney));
     }

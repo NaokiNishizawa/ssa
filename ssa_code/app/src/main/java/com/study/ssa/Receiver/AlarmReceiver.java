@@ -1,13 +1,16 @@
 package com.study.ssa.Receiver;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.os.PowerManager;
 import android.util.Log;
 
+import com.study.ssa.MainActivity;
 import com.study.ssa.SsaSchedule.SsaSchedule;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
+import com.study.ssa.Util.NotificationUtil;
 
 /**
  * Alarmによる通知を受け取るReceiver
@@ -28,8 +31,23 @@ public class AlarmReceiver extends BroadcastReceiver {
             return;
         }
 
-        if(SsaSchedule.MODE_ALERT == schedule.getMode()) {
-            // TODO 通知処理
+        if((SsaSchedule.MODE_ALERT == schedule.getMode()) || (SsaSchedule.MODE_NOTIFICATION == schedule.getMode())) {
+            // 通知
+            Intent mainActivityIntent = new Intent(context, MainActivity.class);
+            mainActivityIntent.setFlags(
+                    Intent.FLAG_ACTIVITY_CLEAR_TOP  // 起動中のアプリがあってもこちらを優先する
+                            | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED  // 起動中のアプリがあってもこちらを優先する
+            );
+
+            PendingIntent contentIntent =
+                    PendingIntent.getActivity(
+                            context,
+                            0,
+                            mainActivityIntent,
+                            PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_ONE_SHOT);
+
+            // 通知を発行
+            NotificationUtil.notice(context, schedule, contentIntent);
 
         } else if(SsaSchedule.MODE_TIMER == schedule.getMode()) {
             // 画面状態を確認し、画面がONの時はアプリを起動する

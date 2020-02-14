@@ -259,7 +259,7 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
      * @param min 分
      * @param sec 秒
      */
-    protected void UpdateTime(int hour, int min, int sec) {
+    protected void updateTime(int hour, int min, int sec) {
         String updateTimeStr = String.format("%1$02d:%2$02d:%3$02d", hour, min, sec);
         mTimeText.setText(updateTimeStr);
     }
@@ -267,7 +267,7 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
     /**
      * 進捗プログレス更新
      */
-    protected void UpdateProgress(int progressRate) {
+    protected void updateProgress(int progressRate) {
         mProgressRate = progressRate;
         mProgressRateText.setText(String.valueOf(mProgressRate) + getString(R.string.progress_rate));
         drawChart();
@@ -301,7 +301,7 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
                     }
 
                     mCount++;
-                    if(5 == mCount) {
+                    if(FIFTEENTH_COUNT == mCount) {
                         addMoney();
                         mCount = 0;
                     }

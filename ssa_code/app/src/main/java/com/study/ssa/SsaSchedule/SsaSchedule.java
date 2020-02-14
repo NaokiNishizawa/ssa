@@ -3,6 +3,8 @@ package com.study.ssa.SsaSchedule;
 import java.io.Serializable;
 import java.util.Date;
 
+import androidx.annotation.Nullable;
+
 /**
  * スケジュールクラス<br>
  * 予定一つに対して一つの本クラスが対応する
@@ -15,6 +17,8 @@ public class SsaSchedule implements Serializable {
     public static final int MODE_ALERT= 1;
     /** モード：タイマー */
     public static final int MODE_TIMER = 2;
+    /** モード：通知 */
+    public static final int MODE_NOTIFICATION = 3;
 
     /** intent key id */
     public static final String INTENT_KEY_ID = "id";
@@ -97,5 +101,16 @@ public class SsaSchedule implements Serializable {
         clone.setMode(mMode);
 
         return clone;
+    }
+
+    public boolean equals(SsaSchedule obj) {
+        boolean result = false;
+
+        if((mSchedule.equals(obj.getSchedule())) && (mStart.equals(obj.getStart())) &&
+                (mEnd.equals(obj.getEnd())) && (mContent.equals(obj.getContent()))) {
+            result = true;
+        }
+
+        return result;
     }
 }

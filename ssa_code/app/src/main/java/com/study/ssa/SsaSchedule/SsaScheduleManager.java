@@ -60,6 +60,65 @@ public class SsaScheduleManager {
     }
 
     /**
+     * 引数で渡されたscheduleの10分前通知用scheduleを作成する
+     *
+     * @param baseSchedule　ベースとするschedule
+     * @return 引数のscheduleの10分前に通知するためのschedule
+     */
+    public SsaSchedule createNotificationSchedule(SsaSchedule baseSchedule) {
+        SsaSchedule notificationSchedule = new SsaSchedule();
+        notificationSchedule = new SsaSchedule();
+
+        // 開始時間から-10分した時間をstartに設定する
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try {
+            Date baseStartData = format.parse(baseSchedule.getStart());
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTime(baseStartData);
+
+            // 自力で計算する。というのもCalenderクラスのaddで-10分しようとしたが、どうしてか正しい値が計算できなかったため渋々・・・
+            int hour = Integer.valueOf(baseSchedule.getStart().split(" ")[1].split(":")[0]);
+            int min = Integer.valueOf(baseSchedule.getStart().split(" ")[1].split(":")[1]);
+
+            // 普通に10分引けるパターン
+            if(min >= 10) {
+                min = min - 10;
+            } else {
+                // hourも一緒に引くパターン
+                if(1 <= hour) {
+                    hour--;
+                    min = (min + 60) - 10;
+                } else {
+                    // 日付まで変更しなければいけないパターン　例:yyyy-MM-dd 00:09など
+                    calendar.add(Calendar.DATE, -1);
+                    hour = 23;
+                    min = (min + 60) - 10;
+                }
+            }
+
+            String notificationDateStr = format.format(calendar.getTime());
+            String notificationScheduleStartStr = notificationDateStr + " " + String.valueOf(hour) + ":" + String.valueOf(min);
+            notificationSchedule.setStart(notificationScheduleStartStr);
+            notificationSchedule.setEnd(baseSchedule.getStart());
+
+            // スタートが変わったことにより予定日が変わった可能性があるため改めて設定
+            notificationSchedule.setSchedule(notificationDateStr);
+
+            // 内容も事前通知であること旨のメッセージに変換
+            notificationSchedule.setContent("予定(" + baseSchedule.getContent() + ")の10分前です");
+
+            // モードは必ず通知モード
+            notificationSchedule.setMode(SsaSchedule.MODE_NOTIFICATION);
+
+        } catch (ParseException e) {
+            // 何もしない
+            return baseSchedule;
+        }
+
+        return  notificationSchedule;
+    }
+
+    /**
      * 引数でもらった日に登録されているアラームモードのスケジュール数を取得する
      * @param date　日付
      * @return　アラームモードのスケジュール数
@@ -157,7 +216,7 @@ public class SsaScheduleManager {
 
         for(SsaSchedule schedule: mSsaScheduleList) {
             SsaSchedule addSchedule;
-            if(dateStr.equals(schedule.getSchedule())) {
+            if((dateStr.equals(schedule.getSchedule())) && (SsaSchedule.MODE_NOTIFICATION != schedule.getMode())) {
                 addSchedule = schedule.clone();
                 list.add(addSchedule);
             }
@@ -181,6 +240,28 @@ public class SsaScheduleManager {
     }
 
     /**
+     * 引数でもらった予定と同じ内容のscheduleを返す<br>
+     * [注意]ない時はnullが返る
+     *
+     * @param base 検索したい予定
+     * @return 検索したい予定と同じ内容予定 or null
+     */
+    public SsaSchedule getEqualSchedule(SsaSchedule base) {
+
+        if(0 == mSsaScheduleList.size()) {
+            return null;
+        }
+        SsaSchedule equal = null;
+        for(SsaSchedule item: mSsaScheduleList) {
+            if(base.equals(item)) {
+                equal = item;
+            }
+        }
+
+        return equal;
+    }
+
+    /**
      * 予定を削除する
      *
      * @param context コンテキスト
@@ -188,9 +269,16 @@ public class SsaScheduleManager {
      */
     public void deleteSchedule(Context context, SsaSchedule delete) {
         Log.d("debug", "deleteSchedule");
+        SsaSchedule registerNotification = null;
         mDB.beginTransaction();
         try {
             mDB.delete(SsaOpenHelper.TABLE_NAME, SsaOpenHelper._ID + "=?", new String[]{String.valueOf(delete.getID())});
+            SsaSchedule notification = createNotificationSchedule(delete);
+            registerNotification = getEqualSchedule(notification);
+            if(null != registerNotification) {
+                // 10分前の通知も削除する
+                mDB.delete(SsaOpenHelper.TABLE_NAME, SsaOpenHelper._ID + "=?", new String[]{String.valueOf(registerNotification.getID())});
+            }
             mDB.setTransactionSuccessful();
         } finally {
             mDB.endTransaction();
@@ -198,6 +286,11 @@ public class SsaScheduleManager {
 
         // アラームを削除
         AlarmManagerUtil.deleteAlarm(context, delete);
+
+        if(null != registerNotification) {
+            // 10分前の通知アラームを削除
+            AlarmManagerUtil.deleteAlarm(context, registerNotification);
+        }
     }
 
     /**
