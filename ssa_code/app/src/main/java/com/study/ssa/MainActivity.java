@@ -3,6 +3,7 @@ package com.study.ssa;
 import android.content.ComponentName;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -11,7 +12,10 @@ import android.widget.TextView;
 
 import com.study.ssa.Receiver.AlarmReceiver;
 import com.study.ssa.Receiver.BootReceiver;
+import com.study.ssa.SsaSchedule.SsaSchedule;
 import com.study.ssa.UI.Adapter.CalendarAdapter;
+import com.study.ssa.UI.Dialog.CountDownTimeDialogFragment;
+import com.study.ssa.UI.Dialog.CountUpTimerDialogFragment;
 import com.study.ssa.UI.Dialog.RegisterDialogFragment;
 import com.study.ssa.UI.Dialog.ScheduleListDialogFragment;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
@@ -36,10 +40,24 @@ public class MainActivity extends FragmentActivity
 
     private SsaScheduleManager mManager;
 
+    /** AlarmReceiverから遷移してきたかを表す */
+    private boolean mIsCalledReceiver;
+
+    /** 表示中 TimerDialog */
+    private BaseTimerDialogFragment mTimerDialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Receiverから呼ばれた場合はすぐにタイマーモードに遷移したいため、遷移元を確認する
+        mIsCalledReceiver = getIntent().getBooleanExtra(AlarmReceiver.KEY_CALLED_RECEIVER, false);
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
 
         // Receiver初期化
         initReceiver();
@@ -53,6 +71,14 @@ public class MainActivity extends FragmentActivity
         // DBから予定を取得する
         mManager = SsaScheduleManager.getInstance();
         mManager.init(getApplicationContext());
+
+        // Receiverから呼ばれた場合はすぐにタイマーモードに遷移する
+        if(mIsCalledReceiver) {
+            // タイマーモード起動
+            Log.d("debug", "called AlarmReceiver");
+            SsaSchedule schedule = (SsaSchedule) getIntent().getSerializableExtra(AlarmReceiver.KEY_SCHEDULE_OBJECT);
+            ShowCountDownTimerDialog(schedule);
+        }
     }
 
     /**
@@ -128,10 +154,17 @@ public class MainActivity extends FragmentActivity
         timerModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // タイマーモードダイアログを表示する
-                FragmentManager manager = getSupportFragmentManager();
-                BaseTimerDialogFragment dialogFragment = new BaseTimerDialogFragment();
-                dialogFragment.show(manager, "");
+                // タイマーモード カウントアップダイアログを表示する
+                ShowCountUpTimerDialog();
+            }
+        });
+
+        Button shopButton = findViewById(R.id.shop_button);
+        shopButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO debugコード
+                ShowCountDownTimerDialog(mManager.getNextSchedule());
             }
         });
     }
@@ -189,6 +222,41 @@ public class MainActivity extends FragmentActivity
         dialogFragment.show(manager, "");
     }
 
+    /**
+     * カウントダウンダイアログ表示処理
+     *
+     * @param schedule
+     */
+    private void ShowCountDownTimerDialog(SsaSchedule schedule) {
+        Log.d("debug", "call ShowCountDownTimerDialog");
+        if(null == schedule) {
+            Log.d("debug", "schedule is null");
+            return;
+        }
+
+        Log.d("debug", "schedule is non null");
+        FragmentManager manager = getSupportFragmentManager();
+        mTimerDialog = new CountDownTimeDialogFragment();
+
+        // ダイアログに必要な情報を渡す
+        Bundle args = new Bundle();
+        args.putSerializable(CountDownTimeDialogFragment.KEY_SCHEDULE,schedule);
+        mTimerDialog.setArguments(args);
+
+        mTimerDialog.show(manager, "");
+    }
+
+    /**
+     * カウントアップダイアログ表示処理
+     */
+    private void ShowCountUpTimerDialog() {
+        Log.d("debug", "call ShowCountUpTimerDialog");
+
+        FragmentManager manager = getSupportFragmentManager();
+        mTimerDialog = new CountUpTimerDialogFragment();
+        mTimerDialog.show(manager, "");
+    }
+
     // RegisterDialog コールバック
     @Override
     public void onRegisterButtonClick() {
@@ -203,9 +271,13 @@ public class MainActivity extends FragmentActivity
         mCalendarAdapter.notifyDataSetChanged();
     }
 
-    // TimerDialo　コールバック
+    // TimerDialog　コールバック
     @Override
     public void onFinish() {
+        mIsCalledReceiver = false;
+        mTimerDialog = null;
+        Log.d("debug", "call onFinish");
+
         // TODO 処理
     }
 }

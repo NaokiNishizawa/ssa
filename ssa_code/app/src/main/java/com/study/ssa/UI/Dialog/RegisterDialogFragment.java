@@ -66,11 +66,11 @@ public class RegisterDialogFragment extends DialogFragment {
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         try {
-            this.mOnDialogButtonClickListener = (OnButtonClickListener) activity;
+            this.mOnDialogButtonClickListener = (OnButtonClickListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }

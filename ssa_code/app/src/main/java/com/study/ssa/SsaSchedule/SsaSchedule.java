@@ -1,12 +1,13 @@
 package com.study.ssa.SsaSchedule;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * スケジュールクラス<br>
  * 予定一つに対して一つの本クラスが対応する
  */
-public class SsaSchedule {
+public class SsaSchedule implements Serializable {
 
     /** モード：未選択 */
     public static final int MODE_NOTHING = 0;

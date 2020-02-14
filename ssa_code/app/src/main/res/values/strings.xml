@@ -16,6 +16,7 @@
 
     <!-- タイマーモードダイアログ -->
     <string name="remaining_time">残り時間</string>
+    <string name="progress_time">経過時間</string>
     <string name="progress_rate">%</string>
     <string name="fifteenth_minutes_passage">15分経過ごとに10$</string>
     <string name="retirement">リタイア</string>

@@ -167,6 +167,20 @@ public class SsaScheduleManager {
     }
 
     /**
+     * 直近の予定を取得する<br>
+     * 予定がない時はnullが返る
+     */
+    public SsaSchedule getNextSchedule() {
+        SsaSchedule schedule = null;
+
+        if(0 != mSsaScheduleList.size()) {
+            schedule = mSsaScheduleList.get(0);
+        }
+
+        return schedule;
+    }
+
+    /**
      * 予定を削除する
      *
      * @param context コンテキスト

@@ -74,11 +74,11 @@ public class ScheduleListDialogFragment extends DialogFragment implements Schedu
     }
 
     @Override
-    public void onAttach(Activity activity) {
-        super.onAttach(activity);
+    public void onAttach(Context context) {
+        super.onAttach(context);
 
         try {
-            this.mListener = (ScheduleListDialogFragment.onScheduleListDialogListener) activity;
+            this.mListener = (ScheduleListDialogFragment.onScheduleListDialogListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
