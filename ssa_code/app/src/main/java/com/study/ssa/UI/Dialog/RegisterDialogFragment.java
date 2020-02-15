@@ -25,6 +25,7 @@ import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaSchedule;
@@ -301,6 +302,15 @@ public class RegisterDialogFragment extends DialogFragment {
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                // 正しい予定か確認する
+                if((-1 == mSchedule.compareTo(mSchedule.getStart(), mSchedule.getEnd())) ||
+                        (0 == mSchedule.compareTo(mSchedule.getStart(), mSchedule.getEnd()))) {
+                    // 時間設定が正しくないため、その旨を通知し保存も何もしない
+                    Toast.makeText(getContext(), getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 // 予定保存処理
                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
 

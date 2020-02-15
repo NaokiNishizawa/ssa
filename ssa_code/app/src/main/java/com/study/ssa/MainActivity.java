@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,22 +26,32 @@ import com.study.ssa.Util.SharedPreferencesUtil;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends FragmentActivity
         implements RegisterDialogFragment.OnButtonClickListener, ScheduleListDialogFragment.onScheduleListDialogListener, BaseTimerDialogFragment.OnFinishClickListener {
 
+    private TextView mGetMoneyText;
+
     private TextView mTitleText;
-    private Button mPrevButton;
-    private Button mNextButton;
+    private ImageButton mPrevButton;
+    private ImageButton mNextButton;
     private CalendarAdapter mCalendarAdapter;
     private GridView mCalendarGridView;
 
+    private DisplayScheduleFragment mDisplayFragment;
+
+    private TextView mTodayAlertScheduleCountText;
+    private TextView mTodayTimerScheduleCountText;
+
     private SsaScheduleManager mManager;
+    private Date mToday;
 
     /** AlarmReceiverから遷移してきたかを表す */
     private boolean mIsCalledReceiver;
@@ -55,11 +66,19 @@ public class MainActivity extends FragmentActivity
 
         // Receiverから呼ばれた場合はすぐにタイマーモードに遷移したいため、遷移元を確認する
         mIsCalledReceiver = getIntent().getBooleanExtra(AlarmReceiver.KEY_CALLED_RECEIVER, false);
+
+        // 本日のDateを保持
+        Calendar calendar = Calendar.getInstance();
+        mToday = calendar.getTime();
     }
 
     @Override
     public void onStart() {
         super.onStart();
+
+        // DBから予定を取得する
+        mManager = SsaScheduleManager.getInstance();
+        mManager.init(getApplicationContext());
 
         // Receiver初期化
         initReceiver();
@@ -67,12 +86,11 @@ public class MainActivity extends FragmentActivity
         // レイアウト初期化
         initLayout();
 
+        // 本日の予定数表示エリア初期化
+        initTodayScheduleCountArea();
+
         // ヘッダーView群の初期化
         initHeaderView();
-
-        // DBから予定を取得する
-        mManager = SsaScheduleManager.getInstance();
-        mManager.init(getApplicationContext());
 
         // Receiverから呼ばれた場合はすぐにタイマーモードに遷移する
         if(mIsCalledReceiver) {
@@ -107,6 +125,10 @@ public class MainActivity extends FragmentActivity
      * レイアウト初期化
      */
     private void initLayout() {
+
+        mGetMoneyText = findViewById(R.id.shojicoin_text);
+        mGetMoneyText.setText("$" + String.valueOf(SharedPreferencesUtil.getMoneyValue(this)));
+
         mTitleText = findViewById(R.id.titleText);
         mPrevButton = findViewById(R.id.prevButton);
         mPrevButton.setOnClickListener(new View.OnClickListener() {
@@ -146,6 +168,20 @@ public class MainActivity extends FragmentActivity
         });
 
         mTitleText.setText(mCalendarAdapter.getTitle());
+
+        mDisplayFragment = (DisplayScheduleFragment) getSupportFragmentManager().findFragmentById(R.id.display_next_schedule);
+    }
+
+    /**
+     * 本日の予定数表示エリア初期化
+     */
+    private void initTodayScheduleCountArea() {
+        mTodayAlertScheduleCountText = findViewById(R.id.alert_schedule_count_text);
+        mTodayTimerScheduleCountText = findViewById(R.id.timer_schedule_count_text);
+
+        // 本日の予定数を表示
+        mTodayAlertScheduleCountText.setText(String.valueOf(mManager.getAlertScheduleCount(mToday)));
+        mTodayTimerScheduleCountText.setText(String.valueOf(mManager.getTimerScheduleCount(mToday)));
     }
 
     /**
@@ -261,27 +297,43 @@ public class MainActivity extends FragmentActivity
     // RegisterDialog コールバック
     @Override
     public void onRegisterButtonClick() {
-        // 登録ダイアログ完了時コールバック adapterを更新する
-        mCalendarAdapter.notifyDataSetChanged();
+        updateView();
     }
 
     // ScheduleListDialog　コールバック
     @Override
     public void onDismiss() {
+        updateView();
+    }
+
+    /**
+     * スケジュールが変更された際に必要な更新をかける処理
+     */
+    private void updateView() {
         // 予定一覧ダイアログdismiss時 adapterを更新する
         mCalendarAdapter.notifyDataSetChanged();
+
+        // 本日の予約数を更新する
+        mTodayAlertScheduleCountText.setText(String.valueOf(mManager.getAlertScheduleCount(mToday)));
+        mTodayTimerScheduleCountText.setText(String.valueOf(mManager.getTimerScheduleCount(mToday)));
+
+        // 直近の予定表示Fragmentを更新
+        mDisplayFragment.updateLayout();
     }
 
     // TimerDialog　コールバック
     @Override
-    public void onFinish() {
+    public void onFinish(int getMoney) {
 
         // ダイアログは処理し終えたので初期化
         mIsCalledReceiver = false;
         mTimerDialog = null;
 
-        // TODO 獲得金額を取得して更新
+        // 取得金額を通知
+        Toast.makeText(this, "今回取得金額: " + String.valueOf(getMoney), Toast.LENGTH_LONG).show();
+
+        // 獲得金額を更新
         int money = SharedPreferencesUtil.getMoneyValue(this);
-        Toast.makeText(this, "取得金額: " + String.valueOf(money), Toast.LENGTH_SHORT).show();
+        mGetMoneyText.setText("$" + String.valueOf(money));
     }
 }

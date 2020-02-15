@@ -43,7 +43,8 @@ public class CalendarAdapter extends BaseAdapter {
         public TextView timerCount;
     }
 
-    public CalendarAdapter(Context context){
+    public
+    CalendarAdapter(Context context){
         mContext = context;
         mLayoutInflater = LayoutInflater.from(mContext);
         mDateManager = new DateManager();

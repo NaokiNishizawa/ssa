@@ -4,14 +4,19 @@
     <string name="channel_description">ssa channel description</string>
 
     <!-- ホーム画面 -->
+    <string name="option_text">オプション</string>
     <string name="plan_nothing">予定はありません</string>
     <string name="do_input_plan">予定を入力してください</string>
     <string name="btn_shop">ショップ</string>
     <string name="btn_timer_mode">タイマーモード</string>
 
+    <!-- 予定表示Fragment -->
+    <string name="nothing_schedule">"予定は何もありません"</string>
+
     <!-- 登録ダイアログ -->
     <string name="before_notification">開始10分前に通知いたしますか？</string>
     <string name="do_register">登録</string>
+    <string name="error_time">登録時間が正しくありません!修正してください。</string>
 
     <!-- 予定一覧ダイアログ -->
     <string name="do_remove">REMOVE</string>

@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -9,39 +8,78 @@
     android:background="@color/colorGray"
     tools:context="com.study.ssa.MainActivity">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:orientation="horizontal"
         android:background="@color/colorWhite">
 
-        <TextView
-            android:id="@+id/titleText"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text=""
-            android:textSize="20sp"
-            android:layout_centerInParent="true"/>
-
         <Button
+            android:id="@+id/option_button"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@mipmap/buy_bt"
+            android:text="@string/option_text"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:textColor="@color/colorWhite" />
+
+        <ImageButton
             android:id="@+id/prevButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Prev"
-            android:layout_alignParentLeft="true"
-            android:layout_marginVertical="10dp"
-            android:layout_marginLeft="10dp"
-            android:background="@color/colorAccent"/>
+            android:background="@null"
+            android:src="@mipmap/prev"
+            android:layout_marginVertical="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin" />
 
-        <Button
+        <TextView
+            android:id="@+id/titleText"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1.5"
+            android:gravity="center"
+            android:text=""
+            android:textColor="@color/colorGold"
+            android:textSize="@dimen/text_normal_size" />
+
+        <ImageButton
             android:id="@+id/nextButton"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Next"
-            android:layout_alignParentRight="true"
-            android:layout_marginVertical="10dp"
-            android:layout_marginRight="10dp"
-            android:background="@color/colorAccent"/>
-    </RelativeLayout>
+            android:background="@null"
+            android:src="@mipmap/next"
+            android:layout_marginVertical="@dimen/normal_margin"
+            android:layout_marginRight="@dimen/normal_margin" />
+
+        <RelativeLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/syojicoin"
+            android:layout_weight="1">
+
+            <ImageView
+                android:id="@+id/coin_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:src="@mipmap/coin_icon" />
+
+            <TextView
+                android:id="@+id/shojicoin_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="0"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:layout_marginLeft="@dimen/normal_margin"
+                android:textSize="@dimen/small_text_size"
+                android:textColor="@color/colorWhite"/>
+
+        </RelativeLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -132,37 +170,113 @@
         android:stretchMode="columnWidth"
         android:verticalSpacing="1dp"/>
 
-    <!-- TODO 予定表示部分 -->
-    <View
+    <!-- 予定表示部分 -->
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:paddingTop="@dimen/normal_margin"
+        android:paddingBottom="@dimen/normal_margin"
+        android:orientation="horizontal">
+
+         <ImageView
+             android:id="@+id/select_character_image"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content" />
+
+        <fragment
+            android:id="@+id/display_next_schedule"
+            android:name="com.study.ssa.DisplayScheduleFragment"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:layout_gravity="center"
+            android:layout_marginLeft="@dimen/large_margin"
+            android:layout_marginRight="@dimen/normal_margin"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginLeft="@dimen/normal_margin"
+        android:layout_marginRight="@dimen/normal_margin"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/skt_arerlt"/>
+
+        <TextView
+            android:id="@+id/alert_schedule_count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/colorWhite"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:visibility="invisible"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/skt_timer"/>
+
+        <TextView
+            android:id="@+id/timer_schedule_count_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="@dimen/small_text_size"
+            android:textColor="@color/colorWhite"/>
+    </LinearLayout>
 
     <!-- ヘッダー -->
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="50dp"
+        android:layout_height="70dp"
+        android:paddingTop="@dimen/normal_margin"
+        android:paddingBottom="@dimen/normal_margin"
         android:background="@color/colorWhite"
         android:orientation="horizontal">
 
-        <Button
-            android:id="@+id/shop_button"
+        <View
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:layout_weight="1"/>
+
+        <Button
+            android:id="@+id/shop_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/home"
+            android:textColor="@color/colorWhite"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
             android:text="@string/btn_shop"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
 
         <Button
             android:id="@+id/timer_mode_button"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:layout_marginRight="10dp"
-            android:layout_marginLeft="10dp"
+            android:background="@mipmap/home"
+            android:textColor="@color/colorWhite"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
             android:text="@string/btn_timer_mode"/>
 
+        <View
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"/>
     </LinearLayout>
 
 

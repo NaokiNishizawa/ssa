@@ -32,7 +32,7 @@ import androidx.fragment.app.DialogFragment;
  */
 public abstract class BaseTimerDialogFragment extends DialogFragment {
 
-    /** 15ふん経過した */
+    /** 15分経過した */
     private static final int FIFTEENTH_COUNT = 60 * 15;
 
     /** 15分ごとに取得できるお金 */
@@ -55,7 +55,7 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
     protected TextView mProgressRateText;
 
     public interface OnFinishClickListener {
-        public void onFinish();
+        public void onFinish(int getMoney);
     }
 
     @Override
@@ -69,6 +69,8 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
         dialog.setContentView(R.layout.timer_dialog);
         // 背景を透明にする
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        // 画面外を押下してもキャンセルしない
+        this.setCancelable(false);
         // 画面OFFにしないようにする
         getActivity().getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
@@ -125,7 +127,7 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
     public void onDetach () {
         super.onDetach();
         if(null != mListener) {
-            mListener.onFinish();
+            mListener.onFinish(mGetMoney);
         }
     }
 

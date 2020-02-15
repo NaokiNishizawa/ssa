@@ -1,7 +1,12 @@
 package com.study.ssa.SsaSchedule;
 
+import android.util.Log;
+
 import java.io.Serializable;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import androidx.annotation.Nullable;
 
@@ -113,4 +118,97 @@ public class SsaSchedule implements Serializable {
 
         return result;
     }
+
+    /**
+     * 比較 第一引数の日付が第二引数の日付に対して過去・現在・未来の日付かを返す
+     *
+     * @param beforeStr
+     * @param afterStr
+     * @return -1 過去の日付 / 0 等しい / 1　未来の日付 / -100 エラー
+     */
+    public int compareTo(String beforeStr, String afterStr) {
+        int result = -100;
+
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
+        try {
+            Date before = format.parse(beforeStr);
+            Date after = format.parse(afterStr);
+
+            result = after.compareTo(before);
+
+            if(0 == result) {
+                // 時間で比較
+                int beforeHour = Integer.valueOf(beforeStr.split(" ")[1].split(":")[0]);
+                int beforeMin = Integer.valueOf(beforeStr.split(" ")[1].split(":")[1]);
+                int afterHour = Integer.valueOf(afterStr.split(" ")[1].split(":")[0]);
+                int afterMin = Integer.valueOf(afterStr.split(" ")[1].split(":")[1]);
+
+                if(beforeHour < afterHour) {
+                    result = 1;
+                } else if(beforeHour > afterHour) {
+                    result = -1;
+                } else {
+                    // hourが等しい時はminで判断
+                    if(beforeMin < afterMin) {
+                        result = 1;
+                    } else if(beforeMin > afterMin) {
+                        result = -1;
+                    } else {
+                        // 全く同じ時間
+                        result = 0;
+                    }
+                }
+            }
+        } catch (ParseException e) {
+            return result;
+        }
+
+        return  result;
+    }
+
+    /*
+    // debug テストコード
+    public void compareToTest() {
+        Log.d("debug", "***** compareToTest Start *****");
+        int result;
+
+        // 年違い
+        String beforeStr = "2020-02-15 10:10";
+        String afterStr = "2021-02-15 10:10";
+        result = compareTo(beforeStr, afterStr);
+        Log.d("debug", "年違い　期待値:1　結果:" + String.valueOf(result));
+        result = compareTo(afterStr, beforeStr);
+        Log.d("debug", "年違い　期待値:-1　結果:" + String.valueOf(result));
+
+        // 日違い
+        beforeStr = "2020-02-15 10:10";
+        afterStr = "2020-02-16 10:10";
+        result = compareTo(beforeStr, afterStr);
+        Log.d("debug", "日違い 期待値:1 結果:" + String.valueOf(result));
+        result = compareTo(afterStr, beforeStr);
+        Log.d("debug", "日違い 期待値:-1 結果:" + String.valueOf(result));
+
+        // 時間違い hour
+        beforeStr = "2020-02-15 10:10";
+        afterStr = "2020-02-15 11:10";
+        result = compareTo(beforeStr, afterStr);
+        Log.d("debug", "時間違い hour 期待値:1 結果:" + String.valueOf(result));
+        result = compareTo(afterStr, beforeStr);
+        Log.d("debug", "時間違い hour 期待値:-1 結果:" + String.valueOf(result));
+
+        // 時間違い min
+        beforeStr = "2020-02-15 10:10";
+        afterStr = "2020-02-15 10:11";
+        result = compareTo(beforeStr, afterStr);
+        Log.d("debug", "時間違い min 期待値:1 結果:" + String.valueOf(result));
+        result = compareTo(afterStr, beforeStr);
+        Log.d("debug", "時間違い min 期待値:-1 結果:" + String.valueOf(result));
+
+        // 等しい
+        beforeStr = "2020-02-15 10:10";
+        afterStr = "2020-02-15 10:10";
+        result = compareTo(beforeStr, afterStr);
+        Log.d("debug", "等しい 期待値:0 結果:" + String.valueOf(result));
+    }
+    */
 }
