@@ -63,7 +63,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 startIntent.putExtra(KEY_SCHEDULE_OBJECT, schedule);
 
                 // このフラグがないとMain画面が起動できない
-                startIntent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 
                 context.startActivity(startIntent);
 
