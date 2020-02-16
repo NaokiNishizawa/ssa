@@ -25,7 +25,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         // 今回の対象のScheduleを取得する
         SsaScheduleManager manager = SsaScheduleManager.getInstance();
         manager.init(context);
-        SsaSchedule schedule = manager.getNextSchedule();
+        SsaSchedule schedule = manager.getNextScheduleIncludeNotificationItem();
         if(null == schedule) {
             // 本来ありえないパス
             return;
