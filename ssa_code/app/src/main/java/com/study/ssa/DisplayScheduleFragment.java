@@ -92,7 +92,7 @@ public class DisplayScheduleFragment extends Fragment {
             String dateStr = String.valueOf(month) + "月" + String.valueOf(day) + "日";
             mDateText.setText(dateStr);
 
-            String scopeStr = mDisplaySchedule.getStart().split(" ")[1] + " ~ " + mDisplaySchedule.getEnd().split(" ")[1];
+            String scopeStr = mDisplaySchedule.getStart().split(" ")[1] + "分 ~ " + mDisplaySchedule.getEnd().split(" ")[1] + "分";
             mScopeText.setText(scopeStr);
 
             mContentText.setText(mDisplaySchedule.getContent());
