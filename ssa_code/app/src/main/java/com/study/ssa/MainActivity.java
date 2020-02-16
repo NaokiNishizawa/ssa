@@ -277,6 +277,11 @@ public class MainActivity extends FragmentActivity
             return;
         }
 
+        if(null != mTimerDialog) {
+            // すでに表示中の場合は、終了させる
+            mTimerDialog.dismiss();
+        }
+
         Log.d("debug", "schedule is non null");
         FragmentManager manager = getSupportFragmentManager();
         mTimerDialog = new CountDownTimeDialogFragment();
@@ -294,6 +299,11 @@ public class MainActivity extends FragmentActivity
      */
     private void ShowCountUpTimerDialog() {
         Log.d("debug", "call ShowCountUpTimerDialog");
+
+        if(null != mTimerDialog) {
+            // すでに表示中の場合は、終了させる
+            mTimerDialog.dismiss();
+        }
 
         FragmentManager manager = getSupportFragmentManager();
         mTimerDialog = new CountUpTimerDialogFragment();

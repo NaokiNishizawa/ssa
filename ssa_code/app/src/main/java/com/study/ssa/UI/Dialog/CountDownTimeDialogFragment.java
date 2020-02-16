@@ -94,6 +94,12 @@ public class CountDownTimeDialogFragment extends BaseTimerDialogFragment {
 
         int progress = 100 - (int) (result * 100);
 
+        // 分母が大きいと計算上の四捨五入で終了間際で100になってしまうパターンが存在するため、
+        // 本当に一致している時以外は99%表示とする
+        if((100 == progress) && (bdCurrentProgressTime != bdDayDiff)) {
+            progress = 99;
+        }
+
         updateProgress(progress);
     }
 
