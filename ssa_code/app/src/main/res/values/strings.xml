@@ -22,6 +22,7 @@
     <string name="do_remove">REMOVE</string>
 
     <!-- タイマーモードダイアログ -->
+    <string name="do_start">開始</string>
     <string name="remaining_time">残り時間</string>
     <string name="progress_time">経過時間</string>
     <string name="progress_rate">%</string>

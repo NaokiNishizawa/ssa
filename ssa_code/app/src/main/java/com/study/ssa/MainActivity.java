@@ -16,12 +16,13 @@ import com.study.ssa.Receiver.AlarmReceiver;
 import com.study.ssa.Receiver.BootReceiver;
 import com.study.ssa.SsaSchedule.SsaSchedule;
 import com.study.ssa.UI.Adapter.CalendarAdapter;
-import com.study.ssa.UI.Dialog.CountDownTimeDialogFragment;
+import com.study.ssa.UI.Dialog.CountDownTimerDialogFragment;
 import com.study.ssa.UI.Dialog.CountUpTimerDialogFragment;
 import com.study.ssa.UI.Dialog.RegisterDialogFragment;
 import com.study.ssa.UI.Dialog.ScheduleListDialogFragment;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 import com.study.ssa.UI.Dialog.BaseTimerDialogFragment;
+import com.study.ssa.UI.Dialog.TimeSettingsDialogFragment;
 import com.study.ssa.Util.SharedPreferencesUtil;
 
 import java.text.ParseException;
@@ -30,12 +31,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends FragmentActivity
-        implements RegisterDialogFragment.OnButtonClickListener, ScheduleListDialogFragment.onScheduleListDialogListener, BaseTimerDialogFragment.OnFinishClickListener {
+        implements RegisterDialogFragment.OnButtonClickListener, ScheduleListDialogFragment.onScheduleListDialogListener,
+        BaseTimerDialogFragment.OnFinishClickListener, TimeSettingsDialogFragment.OnFinishClickListener {
 
     private TextView mGetMoneyText;
 
@@ -57,7 +58,7 @@ public class MainActivity extends FragmentActivity
     private boolean mIsCalledReceiver;
 
     /** 表示中 TimerDialog */
-    private BaseTimerDialogFragment mTimerDialog;
+    private BaseTimerDialogFragment mTimerDialog = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -97,7 +98,7 @@ public class MainActivity extends FragmentActivity
             // タイマーモード起動
             Log.d("debug", "called AlarmReceiver");
             SsaSchedule schedule = (SsaSchedule) getIntent().getSerializableExtra(AlarmReceiver.KEY_SCHEDULE_OBJECT);
-            ShowCountDownTimerDialog(schedule);
+            showCountDownTimerDialog(schedule);
         }
     }
 
@@ -160,7 +161,7 @@ public class MainActivity extends FragmentActivity
                 }
 
                 // 登録ダイアログ表示処理
-                ShowRegisterDialog(position);
+                showRegisterDialog(position);
             }
         });
 
@@ -168,7 +169,7 @@ public class MainActivity extends FragmentActivity
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 // 予定一覧ダイアログ表示処理
-                ShowScheduleListDialog(position);
+                showScheduleListDialog(position);
                 return true;
             }
         });
@@ -198,8 +199,8 @@ public class MainActivity extends FragmentActivity
         timerModeButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // タイマーモード カウントアップダイアログを表示する
-                ShowCountUpTimerDialog();
+                // TimeSettingDialogを表示する
+                showTimerSettingDialog();
             }
         });
 
@@ -217,7 +218,7 @@ public class MainActivity extends FragmentActivity
      *
      * @param position
      */
-    private void ShowRegisterDialog(int position) {
+    private void showRegisterDialog(int position) {
         FragmentManager manager = getSupportFragmentManager();
         RegisterDialogFragment dialogFragment = new RegisterDialogFragment();
 
@@ -235,7 +236,7 @@ public class MainActivity extends FragmentActivity
      *
      * @param position
      */
-    private void ShowScheduleListDialog(int position) {
+    private void showScheduleListDialog(int position) {
 
         // 予定が何もない場合は何も表示しない
         String dayStr = mCalendarAdapter.getItemDateText(position);
@@ -266,12 +267,22 @@ public class MainActivity extends FragmentActivity
     }
 
     /**
+     * 時間設定Dialog表示処理
+     */
+    private void showTimerSettingDialog() {
+        FragmentManager manager = getSupportFragmentManager();
+        TimeSettingsDialogFragment dialogFragment = new TimeSettingsDialogFragment();
+
+        dialogFragment.show(manager, "");
+    }
+
+    /**
      * カウントダウンダイアログ表示処理
      *
      * @param schedule
      */
-    private void ShowCountDownTimerDialog(SsaSchedule schedule) {
-        Log.d("debug", "call ShowCountDownTimerDialog");
+    private void showCountDownTimerDialog(SsaSchedule schedule) {
+        Log.d("debug", "call showCountDownTimerDialog");
         if(null == schedule) {
             Log.d("debug", "schedule is null");
             return;
@@ -284,11 +295,11 @@ public class MainActivity extends FragmentActivity
 
         Log.d("debug", "schedule is non null");
         FragmentManager manager = getSupportFragmentManager();
-        mTimerDialog = new CountDownTimeDialogFragment();
+        mTimerDialog = new CountDownTimerDialogFragment();
 
         // ダイアログに必要な情報を渡す
         Bundle args = new Bundle();
-        args.putSerializable(CountDownTimeDialogFragment.KEY_SCHEDULE,schedule);
+        args.putSerializable(CountDownTimerDialogFragment.KEY_SCHEDULE,schedule);
         mTimerDialog.setArguments(args);
 
         mTimerDialog.show(manager, "");
@@ -297,7 +308,7 @@ public class MainActivity extends FragmentActivity
     /**
      * カウントアップダイアログ表示処理
      */
-    private void ShowCountUpTimerDialog() {
+    private void showCountUpTimerDialog() {
         Log.d("debug", "call ShowCountUpTimerDialog");
 
         if(null != mTimerDialog) {
@@ -335,6 +346,13 @@ public class MainActivity extends FragmentActivity
 
         // 直近の予定表示Fragmentを更新
         mDisplayFragment.updateLayout();
+    }
+
+    // TimeSettingDialog コールバック
+    @Override
+    public void onCompleteTimerSettings(SsaSchedule schedule) {
+        // 設定した時間でカウントダウンダイアログを表示
+        showCountDownTimerDialog(schedule);
     }
 
     // TimerDialog　コールバック

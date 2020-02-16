@@ -14,7 +14,7 @@ import java.util.Locale;
 /**
  * カウントダウン用 タイマーダイアログ
  */
-public class CountDownTimeDialogFragment extends BaseTimerDialogFragment {
+public class CountDownTimerDialogFragment extends BaseTimerDialogFragment {
 
     public static final String KEY_SCHEDULE = "schedule";
 
