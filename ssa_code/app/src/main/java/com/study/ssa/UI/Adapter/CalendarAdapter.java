@@ -164,6 +164,16 @@ public class CalendarAdapter extends BaseAdapter {
         return format.format(dateArray.get(position));
     }
 
+    /**
+     * positionに設定されている日付を返す
+     *
+     * @param position
+     * @return 日付
+     */
+    public Date getItemDate(int position) {
+        return dateArray.get(position);
+    }
+
     //表示月を取得
     public String getTitle(){
         SimpleDateFormat format = new SimpleDateFormat("yyyy.MM", Locale.US);

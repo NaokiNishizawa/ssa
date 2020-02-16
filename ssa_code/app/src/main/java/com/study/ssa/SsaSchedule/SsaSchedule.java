@@ -112,7 +112,7 @@ public class SsaSchedule implements Serializable {
         boolean result = false;
 
         if((mSchedule.equals(obj.getSchedule())) && (mStart.equals(obj.getStart())) &&
-                (mEnd.equals(obj.getEnd())) && (mContent.equals(obj.getContent()))) {
+                (mEnd.equals(obj.getEnd())) && (mContent.equals(obj.getContent())) && (mMode == obj.getMode())) {
             result = true;
         }
 

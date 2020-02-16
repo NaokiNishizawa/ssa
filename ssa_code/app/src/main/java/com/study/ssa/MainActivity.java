@@ -153,6 +153,12 @@ public class MainActivity extends FragmentActivity
         mCalendarGridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+
+                // 本日より過去の日付を押下された時は何もしない
+                if(-1 == mCalendarAdapter.getItemDate(position).compareTo(mToday)) {
+                    return;
+                }
+
                 // 登録ダイアログ表示処理
                 ShowRegisterDialog(position);
             }

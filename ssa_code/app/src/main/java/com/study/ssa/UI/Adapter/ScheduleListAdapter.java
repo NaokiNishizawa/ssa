@@ -129,10 +129,26 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListViewHo
         // モードにあったアイコンボタンを表示する
         if(SsaSchedule.MODE_ALERT == item.getMode()) {
             holder.mAlertImage.setVisibility(View.VISIBLE);
+            holder.mAlertImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // タイマーモードに変更
+                    holder.mSchedule.setMode(SsaSchedule.MODE_TIMER);
+                    notifyDataSetChanged();
+                }
+            });
             holder.mTimerImage.setVisibility(View.GONE);
         } else if(SsaSchedule.MODE_TIMER == item.getMode()) {
             holder.mAlertImage.setVisibility(View.GONE);
             holder.mTimerImage.setVisibility(View.VISIBLE);
+            holder.mTimerImage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    // アラートモードに変更
+                    holder.mSchedule.setMode(SsaSchedule.MODE_ALERT);
+                    notifyDataSetChanged();
+                }
+            });
         } else {
             // 何もしない
         }

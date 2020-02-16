@@ -233,7 +233,12 @@ public class SsaScheduleManager {
         SsaSchedule schedule = null;
 
         if(0 != mSsaScheduleList.size()) {
-            schedule = mSsaScheduleList.get(0);
+            for (SsaSchedule item: mSsaScheduleList) {
+                if(SsaSchedule.MODE_NOTIFICATION != item.getMode()) {
+                    schedule = item;
+                    break;
+                }
+            }
         }
 
         return schedule;
