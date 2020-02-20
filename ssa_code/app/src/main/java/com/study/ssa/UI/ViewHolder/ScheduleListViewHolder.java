@@ -12,7 +12,7 @@ import com.study.ssa.SsaSchedule.SsaSchedule;
 import androidx.recyclerview.widget.RecyclerView;
 
 /**
- * Shedule ListのViewHolderクラス
+ * Schedule ListのViewHolderクラス
  */
 public class ScheduleListViewHolder extends RecyclerView.ViewHolder{
 
