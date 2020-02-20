@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:background="@color/colorGray"
-    tools:context="com.study.ssa.MainActivity">
+    tools:context="com.study.ssa.UI.MainActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -186,7 +186,7 @@
 
         <fragment
             android:id="@+id/display_next_schedule"
-            android:name="com.study.ssa.DisplayScheduleFragment"
+            android:name="com.study.ssa.UI.DisplayScheduleFragment"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"

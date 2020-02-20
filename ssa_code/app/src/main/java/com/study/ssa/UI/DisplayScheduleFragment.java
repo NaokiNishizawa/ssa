@@ -1,4 +1,4 @@
-package com.study.ssa;
+package com.study.ssa.UI;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -7,6 +7,7 @@ import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaSchedule;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 

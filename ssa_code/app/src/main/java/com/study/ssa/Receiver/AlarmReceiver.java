@@ -7,7 +7,7 @@ import android.content.Intent;
 import android.os.PowerManager;
 import android.util.Log;
 
-import com.study.ssa.MainActivity;
+import com.study.ssa.UI.MainActivity;
 import com.study.ssa.SsaSchedule.SsaSchedule;
 import com.study.ssa.SsaSchedule.SsaScheduleManager;
 import com.study.ssa.Util.NotificationUtil;

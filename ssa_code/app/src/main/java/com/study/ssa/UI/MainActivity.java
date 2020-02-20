@@ -1,6 +1,7 @@
-package com.study.ssa;
+package com.study.ssa.UI;
 
 import android.content.ComponentName;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,16 +13,17 @@ import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.study.ssa.R;
 import com.study.ssa.Receiver.AlarmReceiver;
 import com.study.ssa.Receiver.BootReceiver;
 import com.study.ssa.SsaSchedule.SsaSchedule;
+import com.study.ssa.SsaSchedule.SsaScheduleManager;
 import com.study.ssa.UI.Adapter.CalendarAdapter;
+import com.study.ssa.UI.Dialog.BaseTimerDialogFragment;
 import com.study.ssa.UI.Dialog.CountDownTimerDialogFragment;
 import com.study.ssa.UI.Dialog.CountUpTimerDialogFragment;
 import com.study.ssa.UI.Dialog.RegisterDialogFragment;
 import com.study.ssa.UI.Dialog.ScheduleListDialogFragment;
-import com.study.ssa.SsaSchedule.SsaScheduleManager;
-import com.study.ssa.UI.Dialog.BaseTimerDialogFragment;
 import com.study.ssa.UI.Dialog.TimeSettingsDialogFragment;
 import com.study.ssa.Util.SharedPreferencesUtil;
 
@@ -208,7 +210,8 @@ public class MainActivity extends FragmentActivity
         shopButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO ショップ
+                Intent intent = new Intent(getApplicationContext(), ShopActivity.class);
+                startActivity(intent);
             }
         });
     }

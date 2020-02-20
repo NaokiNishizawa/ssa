@@ -169,6 +169,7 @@ public class TimeSettingsDialogFragment extends DialogFragment {
         });
 
         mEndText.setText("00:00"); // 初期値は00:00
+        mSchedule.setEnd(mTodayYYYYMMDD + " " + "00:00");
     }
 
     /**
