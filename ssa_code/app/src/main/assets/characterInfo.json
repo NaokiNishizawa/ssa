@@ -1,0 +1,24 @@
+{
+    "characterlist":[
+        {
+            "name": "ひつじ",
+            "price": 1000,
+            "icon": "hituji"
+        },
+        {
+            "name": "アライグマ",
+            "price": 1000,
+            "icon": "araiguma"
+        },
+        {
+            "name": "コアラ",
+            "price": 1000,
+            "icon": "koara"
+        },
+        {
+            "name": "出刃ねずみ",
+            "price": 1000,
+            "icon": "debanezumi"
+        }
+    ]
+}

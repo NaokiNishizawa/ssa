@@ -20,7 +20,7 @@ import com.study.ssa.DB.SsaOpenHelper;
 
 /**
  * 予定管理クラス
- * どこからでも仕様できるようにシングルトンで作成する
+ * どこからでも使用できるようにシングルトンで作成する
  */
 public class SsaScheduleManager {
 

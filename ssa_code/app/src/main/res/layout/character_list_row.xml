@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/character_board"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:background="@mipmap/syouhin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/character_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="45dp"
+            android:layout_marginLeft="@dimen/dauble_large_margin"
+            android:text="hogehoge"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/small_text_size"
+            android:layout_alignTop="@+id/character_buy"
+            android:layout_alignLeft="@+id/character_buy"/>
+
+        <LinearLayout
+            android:id="@+id/character_buy"
+            android:background="@mipmap/buy_bt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dauble_large_margin"
+            android:layout_centerVertical="true"
+            android:orientation="horizontal">
+
+            <ImageButton
+                android:id="@+id/character_coin_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@mipmap/coin_icon"
+                android:layout_marginLeft="@dimen/normal_margin"/>
+
+            <TextView
+                android:id="@+id/character_price_text"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_gravity="center"
+                android:text="1000"
+                android:layout_marginLeft="@dimen/normal_margin"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/text_normal_size"
+                android:textStyle="bold"/>
+
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/character_icon"
+            android:src="@mipmap/hituji"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/dauble_large_margin"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@+id/character_buy"/>
+
+    </RelativeLayout>
+
+    <!-- 区切り線 -->
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="@color/colorGray"/>
+
+</LinearLayout>

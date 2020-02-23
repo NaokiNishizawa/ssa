@@ -4,6 +4,8 @@
     <dimen name="text_little_large_size">25sp</dimen>
     <dimen name="text_large_size">40sp</dimen>
     <dimen name="large_margin">20dp</dimen>
+    <dimen name="dauble_large_margin">40dp</dimen>
+    <dimen name="triple_large_margin">60dp</dimen>
     <dimen name="normal_margin">10dp</dimen>
     <dimen name="small_margin">5dp</dimen>
     <dimen name="small_text_size">15sp</dimen>
