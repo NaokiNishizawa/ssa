@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:background="@color/colorGray"
+    android:background="@mipmap/bg"
     tools:context="com.study.ssa.UI.MainActivity">
 
     <LinearLayout
@@ -84,78 +84,95 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginVertical="1dp">
+        android:orientation="vertical">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginHorizontal="1dp"
-            android:textAlignment="center"
-            android:text="日"
-            android:background="@color/colorWhite"
-            android:textColor="@color/colorRed"/>
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_marginRight="1dp"
-            android:layout_weight="1"
-            android:background="@color/colorWhite"
-            android:text="月"
-            android:textColor="@color/colorBlack"
-            android:textAlignment="center"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@color/colorGray">
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginRight="1dp"
-            android:textAlignment="center"
-            android:text="火"
-            android:textColor="@color/colorBlack"
-            android:background="@color/colorWhite"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginHorizontal="1dp"
+                android:textAlignment="center"
+                android:text="日"
+                android:background="@color/colorWhite"
+                android:textColor="@color/colorRed"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginRight="1dp"
-            android:textAlignment="center"
-            android:text="水"
-            android:textColor="@color/colorBlack"
-            android:background="@color/colorWhite"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_marginRight="1dp"
+                android:layout_weight="1"
+                android:background="@color/colorWhite"
+                android:text="月"
+                android:textColor="@color/colorBlack"
+                android:textAlignment="center"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginRight="1dp"
-            android:textAlignment="center"
-            android:text="木"
-            android:textColor="@color/colorBlack"
-            android:background="@color/colorWhite"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="1dp"
+                android:textAlignment="center"
+                android:text="火"
+                android:textColor="@color/colorBlack"
+                android:background="@color/colorWhite"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginRight="1dp"
-            android:textAlignment="center"
-            android:text="金"
-            android:textColor="@color/colorBlack"
-            android:background="@color/colorWhite"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="1dp"
+                android:textAlignment="center"
+                android:text="水"
+                android:textColor="@color/colorBlack"
+                android:background="@color/colorWhite"/>
 
-        <TextView
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:layout_marginRight="1dp"
-            android:textAlignment="center"
-            android:text="土"
-            android:textColor="@color/colorBlue"
-            android:background="@color/colorWhite"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="1dp"
+                android:textAlignment="center"
+                android:text="木"
+                android:textColor="@color/colorBlack"
+                android:background="@color/colorWhite"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="1dp"
+                android:textAlignment="center"
+                android:text="金"
+                android:textColor="@color/colorBlack"
+                android:background="@color/colorWhite"/>
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:layout_marginRight="1dp"
+                android:textAlignment="center"
+                android:text="土"
+                android:textColor="@color/colorBlue"
+                android:background="@color/colorWhite"/>
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/colorGray"/>
 
     </LinearLayout>
 
@@ -168,6 +185,7 @@
         android:layout_marginLeft="1dp"
         android:numColumns="7"
         android:stretchMode="columnWidth"
+        android:background="@color/colorGray"
         android:verticalSpacing="1dp"/>
 
     <!-- 予定表示部分 -->
@@ -182,7 +200,8 @@
          <ImageView
              android:id="@+id/select_character_image"
              android:layout_width="wrap_content"
-             android:layout_height="wrap_content" />
+             android:layout_height="wrap_content"
+             android:layout_gravity="bottom"/>
 
         <fragment
             android:id="@+id/display_next_schedule"

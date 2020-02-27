@@ -130,6 +130,24 @@ public class CharacterInfoManager {
     }
 
     /**
+     * 選択中のキャラクター情報取得<br>
+     * ただし選択中のキャラクターがない場合はnullになる
+     *
+     * @return 選択中のキャラクター情報 or null
+     */
+    public CharacterInfo getSelectedCharacterInfo() {
+        CharacterInfo info = null;
+        for (CharacterInfo item: mAllCharacterList) {
+            if(CharacterInfo.STATUS_SELECTED == item.getStatus()) {
+                info = item;
+                break;
+            }
+        }
+
+        return info;
+    }
+
+    /**
      * mAllCharacterListの内容を更新する
      *
      * @param context

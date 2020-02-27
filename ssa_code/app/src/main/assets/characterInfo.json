@@ -1,6 +1,11 @@
 {
     "characterlist":[
         {
+            "name": "ひよこ",
+            "price": 1000,
+            "icon": "hiyoko"
+        },
+        {
             "name": "ひつじ",
             "price": 1000,
             "icon": "hituji"

@@ -10,9 +10,12 @@ import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.study.ssa.CharacterData.CharacterInfo;
+import com.study.ssa.CharacterData.CharacterInfoManager;
 import com.study.ssa.R;
 import com.study.ssa.Receiver.AlarmReceiver;
 import com.study.ssa.Receiver.BootReceiver;
@@ -31,6 +34,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import androidx.fragment.app.FragmentActivity;
@@ -86,6 +90,9 @@ public class MainActivity extends FragmentActivity
         // Receiver初期化
         initReceiver();
 
+        // キャラクター画像初期化
+        initSelectedCharacterImage();
+
         // レイアウト初期化
         initLayout();
 
@@ -125,12 +132,25 @@ public class MainActivity extends FragmentActivity
     }
 
     /**
+     * 選択中のキャラクター画像の初期化
+     */
+    private void initSelectedCharacterImage() {
+        CharacterInfoManager characterInfoManager = CharacterInfoManager.getInstance();
+        // 選択中のキャラクターを取得する
+        CharacterInfo info = characterInfoManager.getSelectedCharacterInfo();
+        if(null != info) {
+            ImageView imageView = findViewById(R.id.select_character_image);
+            imageView.setImageResource(getResources().getIdentifier(info.getIcon(), "mipmap", getPackageName()));
+        }
+    }
+
+    /**
      * レイアウト初期化
      */
     private void initLayout() {
 
         mGetMoneyText = findViewById(R.id.shojicoin_text);
-        mGetMoneyText.setText("$" + String.valueOf(SharedPreferencesUtil.getMoneyValue(this)));
+        mGetMoneyText.setText(String.valueOf(SharedPreferencesUtil.getMoneyValue(this)) + getString(R.string.get_money));
 
         mTitleText = findViewById(R.id.titleText);
         mPrevButton = findViewById(R.id.prevButton);
@@ -371,6 +391,6 @@ public class MainActivity extends FragmentActivity
 
         // 獲得金額を更新
         int money = SharedPreferencesUtil.getMoneyValue(this);
-        mGetMoneyText.setText("$" + String.valueOf(money));
+        mGetMoneyText.setText(String.valueOf(money) + getString(R.string.get_money));
     }
 }
