@@ -1,10 +1,108 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical" android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/room">
 
-    <TextView
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:background="@color/colorWhite">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/selected_character"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_normal_size"/>
+        <TextView
+            android:id="@+id/sp_selected_character_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/colorBlack"
+            android:textSize="@dimen/text_normal_size"/>
+
+        <View
+            android:layout_width="0dp"
+            android:layout_height="1dp"
+            android:layout_weight="1"/>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/syojicoin">
+
+            <ImageView
+                android:id="@+id/sp_coin_icon"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/small_margin"
+                android:src="@mipmap/coin_icon" />
+
+            <TextView
+                android:id="@+id/sp_shojicoin_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="0"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:layout_marginLeft="@dimen/normal_margin"
+                android:textSize="@dimen/small_text_size"
+                android:textColor="@color/colorWhite"/>
+
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="hogehoge"/>
+        android:layout_gravity="center"
+        android:layout_margin="@dimen/small_margin"
+        android:src="@mipmap/boad"/>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_gravity="center"
+        android:fadeScrollbars="false"
+        android:layout_marginTop="@dimen/normal_margin"
+        android:layout_marginBottom="@dimen/normal_margin"
+        android:layout_marginLeft="@dimen/triple_large_margin"
+        android:layout_marginRight="@dimen/triple_large_margin">
+
+        <com.study.ssa.UI.CustomWidget.MesuredRecyclerView
+            android:id="@+id/sp_character_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    </ScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingTop="@dimen/normal_margin"
+        android:paddingBottom="@dimen/normal_margin"
+        android:background="@color/colorWhite">
+
+        <Button
+            android:id="@+id/sp_go_home_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/home"
+            android:textColor="@color/colorWhite"
+            android:layout_marginRight="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/normal_margin"
+            android:text="@string/home"/>
+
+    </LinearLayout>
+
 </LinearLayout>

@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
+    android:gravity="center"
     android:layout_height="wrap_content">
 
     <RelativeLayout
@@ -19,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
-            android:layout_marginLeft="@dimen/dauble_large_margin"
+            android:layout_marginLeft="30dp"
             android:text="hogehoge"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/small_text_size"
@@ -68,10 +69,9 @@
 
     </RelativeLayout>
 
-    <!-- 区切り線 -->
+    <!-- 区切り -->
     <View
         android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/colorGray"/>
+        android:layout_height="20dp" />
 
 </LinearLayout>

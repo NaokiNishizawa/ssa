@@ -30,4 +30,15 @@
     <string name="retirement">リタイア</string>
     <string name="get_confirm">現在取得確定</string>
     <string name="get_money">$</string>
+
+    <!-- ショップ画面 -->
+    <string name="selected_character">現在のマスコット:</string>
+    <string name="home">ホーム</string>
+    <string name="character_nothing">なし</string>
+    <string name="do_select">選択する</string>
+    <string name="selecting">選択中</string>
+    <string name="unpurchasable">購入金額が足りないため、購入できません</string>
+    <string name="confirm_buy_message">を購入しても良いですか？</string>
+    <string name="ok">ok</string>
+    <string name="cancel">cancel</string>
 </resources>

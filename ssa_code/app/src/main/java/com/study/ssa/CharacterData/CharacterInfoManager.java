@@ -3,6 +3,8 @@ package com.study.ssa.CharacterData;
 import android.content.Context;
 import android.util.Log;
 
+import com.study.ssa.Util.SharedPreferencesUtil;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -33,11 +35,6 @@ public class CharacterInfoManager {
     private List<CharacterInfo> mAllCharacterList;
 
     /**
-     * 購入済みのキャラクター一覧
-     */
-    private List<CharacterInfo> mBuyCharacterList;
-
-    /**
      * コンストラクタ　隠蔽
      */
     private CharacterInfoManager() {
@@ -62,18 +59,9 @@ public class CharacterInfoManager {
      *
      * @return キャラクター一覧
      */
-    public List<CharacterInfo> getAllCharacterList() {
+    public List<CharacterInfo> getAllCharacterList(Context context) {
+        updateCharacterList(context);
         return mAllCharacterList;
-    }
-
-    /**
-     * 購入済みのキャラクター一覧<br>
-     * 何も購入してない場合は、nullが返る
-     *
-     * @return キャラクター一覧 or null
-     */
-    public List<CharacterInfo> getBuyCharacterList() {
-        return mBuyCharacterList;
     }
 
     /**
@@ -83,14 +71,14 @@ public class CharacterInfoManager {
      */
     public void init(Context context) {
         // assetsからcharacterInfoを作成する
-        readCharacterDate(context);
+        readAllCharacterDate(context);
     }
 
     /**
-     * キャラクター情報を読み込む
+     * 全キャラクター情報を読み込む
      * @param context
      */
-    private void readCharacterDate(Context context) {
+    private void readAllCharacterDate(Context context) {
         mAllCharacterList = new ArrayList<>();
         // assetsのjsonデータを読み込みリストに詰める
         String jsonData;
@@ -126,6 +114,7 @@ public class CharacterInfoManager {
                 info.setName(object.getString(JSON_KEY_NAME));
                 info.setPrice(object.getInt(JSON_KEY_PRICE));
                 info.setIcon(object.getString(JSON_KEY_ICON));
+                info.setStatus(CharacterInfo.STATUS_NOT_PURCHASED);
 
                 Log.d("debug", "character info Name:" + info.getName() + " price:" + String.valueOf(info.getPrice()) +
                 " icon:" + info.getIcon());
@@ -135,6 +124,42 @@ public class CharacterInfoManager {
         } catch (JSONException e) {
             e.printStackTrace();
             return;
+        }
+
+        updateCharacterList(context);
+    }
+
+    /**
+     * mAllCharacterListの内容を更新する
+     *
+     * @param context
+     */
+    private void updateCharacterList(Context context) {
+        // preferenceからの購入済のキャラクターを読み込みステータスを設定していく
+        List<String> buyCharacterNameList = SharedPreferencesUtil.getBuyCharactersList(context);
+        if(null == buyCharacterNameList) {
+            return;
+        }
+
+        String selectedCharacterName = SharedPreferencesUtil.getSelectedCharacterName(context);
+        if(0 == selectedCharacterName.length()) {
+            return;
+        }
+
+        // ステータスを更新する
+        for(CharacterInfo info: mAllCharacterList) {
+            for(String item: buyCharacterNameList) {
+                if(item.equals(info.getName())) {
+                    // 購入済は確定したので、選択中かを確認
+                    if(selectedCharacterName.equals(info.getName())) {
+                        // 選択中
+                        info.setStatus(CharacterInfo.STATUS_SELECTED);
+                    } else {
+                        // 購入済
+                        info.setStatus(CharacterInfo.STATUS_PURCHASED);
+                    }
+                }
+            }
         }
     }
 }
