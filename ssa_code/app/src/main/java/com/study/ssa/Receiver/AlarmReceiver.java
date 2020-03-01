@@ -77,6 +77,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         }
 
         // もう直近のscheduleは用済みなので削除する
-        manager.deleteSchedule(context, schedule);
+        manager.deleteScheduleOnly(context, schedule);
     }
 }

@@ -38,13 +38,19 @@ public class NotificationUtil {
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.mipmap.ic_launcher)
-                .setContentTitle(schedule.getContent())
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[]{0, 500, 250, 500, 250})
                 .setLights(Color.GREEN,2000,1000)
                 // Set the intent that will fire when the user taps the notification
                 .setContentIntent(intent)
                 .setAutoCancel(true);
+
+        // アラームモードの場合は"「予定内容」の開始時間です"という文言に修正して通知する
+        String title = schedule.getContent();
+        if(SsaSchedule.MODE_ALERT == schedule.getMode()) {
+            title = "「" + title + "」の開始時刻です";
+        }
+        builder.setContentTitle(title);
 
         NotificationManager manager = (NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE);
         manager.notify(1, builder.build());

@@ -139,6 +139,29 @@ public class SsaScheduleManager {
     }
 
     /**
+     * 引数で渡された予定の終了時刻通知用のScheduleを作成する
+     *
+     * @param base
+     * @return 引数のscheduleの終了時刻を通知するためのschedule
+     */
+    private SsaSchedule createEndTimeNotificationSchedule(SsaSchedule base) {
+        SsaSchedule notificationSchedule = new SsaSchedule();
+
+        notificationSchedule.setSchedule(base.getSchedule());
+        // 開始時刻と終了時刻は同時刻とする
+        notificationSchedule.setStart(base.getEnd());
+        notificationSchedule.setEnd(base.getEnd());
+
+        // 内容は開始時刻である旨のメッセージに変換
+        notificationSchedule.setContent("「" + base.getContent() + "」の終了時刻です");
+
+        // モードは必ず通知モード
+        notificationSchedule.setMode(SsaSchedule.MODE_NOTIFICATION);
+
+        return notificationSchedule;
+    }
+
+    /**
      * 引数でもらった日に登録されているアラームモードのスケジュール数を取得する
      * @param date　日付
      * @return　アラームモードのスケジュール数
@@ -308,16 +331,40 @@ public class SsaScheduleManager {
      */
     public void deleteSchedule(Context context, SsaSchedule delete) {
         Log.d("debug", "deleteSchedule");
-        SsaSchedule registerNotification = null;
+
+        // まずはメインの予定を削除
+        deleteScheduleOnly(context, delete);
+
+        // 10分前の通知も削除する
+        SsaSchedule notification = createNotificationSchedule(delete);
+        SsaSchedule registerNotification = getEqualSchedule(notification);
+        if(null != registerNotification) {
+            deleteScheduleOnly(context, registerNotification);
+        }
+
+        // アラームモードの場合終了時刻通知用の通知も削除する
+        if(SsaSchedule.MODE_ALERT == delete.getMode()) {
+            SsaSchedule endNotification = createEndTimeNotificationSchedule(delete);
+            SsaSchedule registerEndNotification = getEqualSchedule(endNotification);
+            if(null != registerEndNotification) {
+                // 終了時刻通知用　削除
+                deleteScheduleOnly(context, registerEndNotification);
+            }
+        }
+    }
+
+    /**
+     * 予定の削除 引数でもらった予定意外は削除しない
+     *
+     * @param context
+     * @param delete
+     */
+    public void deleteScheduleOnly(Context context, SsaSchedule delete) {
+        Log.d("debug", "deleteScheduleOnly");
+
         mDB.beginTransaction();
         try {
             mDB.delete(SsaOpenHelper.TABLE_NAME, SsaOpenHelper._ID + "=?", new String[]{String.valueOf(delete.getID())});
-            SsaSchedule notification = createNotificationSchedule(delete);
-            registerNotification = getEqualSchedule(notification);
-            if(null != registerNotification) {
-                // 10分前の通知も削除する
-                mDB.delete(SsaOpenHelper.TABLE_NAME, SsaOpenHelper._ID + "=?", new String[]{String.valueOf(registerNotification.getID())});
-            }
             mDB.setTransactionSuccessful();
         } finally {
             mDB.endTransaction();
@@ -325,11 +372,6 @@ public class SsaScheduleManager {
 
         // アラームを削除
         AlarmManagerUtil.deleteAlarm(context, delete);
-
-        if(null != registerNotification) {
-            // 10分前の通知アラームを削除
-            AlarmManagerUtil.deleteAlarm(context, registerNotification);
-        }
     }
 
     /**
@@ -355,13 +397,12 @@ public class SsaScheduleManager {
     }
 
     /**
-     * 予定追加
+     * 予定をDBに書き込み アラームも設定する
      *
-     * @param  context コンテキスト
-     * @param add 追加する予定
+     * @param context
+     * @param add
      */
-    public void addSchedule(Context context, SsaSchedule add) {
-        mSsaScheduleList.add(add);
+    private void writeDBAndAlarmSet(Context context, SsaSchedule add) {
 
         // DBへの書き込み
         ContentValues values = new ContentValues();
@@ -386,6 +427,23 @@ public class SsaScheduleManager {
 
         // アラームにも追加
         AlarmManagerUtil.setAlarm(context, add);
+    }
+
+    /**
+     * 予定追加
+     *
+     * @param  context コンテキスト
+     * @param add 追加する予定
+     */
+    public void addSchedule(Context context, SsaSchedule add) {
+
+        // 予定のタイプがアラートの場合終了時刻用の予定もDBに書きこむ
+        if(SsaSchedule.MODE_ALERT == add.getMode()) {
+            writeDBAndAlarmSet(context, createEndTimeNotificationSchedule(add));
+        }
+
+        mSsaScheduleList.add(add);
+        writeDBAndAlarmSet(context, add);
     }
 
     /**
