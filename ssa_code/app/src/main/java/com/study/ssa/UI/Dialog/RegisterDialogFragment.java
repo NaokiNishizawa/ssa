@@ -311,9 +311,17 @@ public class RegisterDialogFragment extends DialogFragment {
                     return;
                 }
 
-                // 予定保存処理
                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
 
+                // 開始時刻が重複していないか確認する
+                 if(manager.isBooking(mSchedule)) {
+                     // 重複しているため、その旨を通知して保存も何もしない
+                     Toast.makeText(getContext(), getString(R.string.error_booking_schedule), Toast.LENGTH_LONG).show();
+                     return;
+                 }
+
+
+                // 予定保存処理
                 if(mIsNotificationTenMin) {
                     // 10分前予定保存処理
                     SsaSchedule notification = manager.createNotificationSchedule(mSchedule);

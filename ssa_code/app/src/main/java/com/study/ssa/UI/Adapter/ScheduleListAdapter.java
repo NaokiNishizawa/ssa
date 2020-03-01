@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaSchedule;
@@ -88,11 +89,36 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListViewHo
                         new TimePickerDialog.OnTimeSetListener(){
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                holder.mStartTimeView.setText(String.format("%02d:%02d", hourOfDay, minute));
-                                Log.d("debug", holder.mStartTimeView.getText().toString());
+                                String newStartTime = String.format("%02d:%02d", hourOfDay, minute);
+                                String newStart = holder.mDayView.getText().toString() + " " + newStartTime;
 
-                                // Scheduleクラスに保存
-                                holder.mSchedule.setStart((holder.mDayView.getText().toString() + " " + holder.mStartTimeView.getText().toString()));
+                                SsaSchedule confirmSchedule = new SsaSchedule();
+                                confirmSchedule.setStart(newStart);
+                                confirmSchedule.setEnd(holder.mSchedule.getEnd());
+
+
+                                // 終了時刻より後ろの時間でないか確認する
+                                if(1 != confirmSchedule.compareTo(confirmSchedule.getStart(), confirmSchedule.getEnd())) {
+                                    // 過去 or ピッタリの予定のため、その旨を通知して保存も何もしない
+                                    Toast.makeText(mContext, mContext.getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+
+                                // 重複していないか確認する
+                                SsaScheduleManager manager = SsaScheduleManager.getInstance();
+                                if(manager.isBooking(confirmSchedule)) {
+                                    // 重複しているため、その旨を通知して保存も何もしない
+                                    Toast.makeText(mContext, mContext.getString(R.string.error_booking_schedule), Toast.LENGTH_LONG).show();
+                                    return;
+                                } else {
+                                    // 重複していないためScheduleクラスに保存
+                                    holder.mSchedule.setStart(newStart);
+
+                                    // UIも更新
+                                    holder.mStartTimeView.setText(newStartTime);
+                                    Log.d("debug", holder.mStartTimeView.getText().toString());
+                                    notifyDataSetChanged();
+                                }
                             }
                         },
                         hour,min,true);
@@ -113,7 +139,22 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListViewHo
                         new TimePickerDialog.OnTimeSetListener(){
                             @Override
                             public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                                holder.mEndTimeView.setText(String.format("%02d:%02d", hourOfDay, minute));
+
+                                String newEndTime = String.format("%02d:%02d", hourOfDay, minute);
+                                String newEnd = holder.mDayView.getText().toString() + " " + newEndTime;
+
+                                SsaSchedule confirmSchedule = new SsaSchedule();
+                                confirmSchedule.setStart(holder.mSchedule.getStart());
+                                confirmSchedule.setEnd(newEnd);
+
+                                // 開始時刻より前の時間になっていないことを確認する
+                                if(-1 != confirmSchedule.compareTo(confirmSchedule.getEnd(), confirmSchedule.getStart())) {
+                                    // 未来 or ピッタリの予定のため、その旨を通知して保存も何もしない
+                                    Toast.makeText(mContext, mContext.getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+
+                                holder.mEndTimeView.setText(newEndTime);
                                 Log.d("debug", holder.mEndTimeView.getText().toString());
 
                                 // Scheduleクラスに保存

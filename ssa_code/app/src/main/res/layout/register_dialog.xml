@@ -22,7 +22,8 @@
         android:id="@+id/content_edit_text"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/do_input_plan"/>
+        android:hint="@string/do_input_plan"
+        android:maxLength="10"/>
 
     <LinearLayout
         android:layout_width="match_parent"

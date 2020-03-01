@@ -60,6 +60,26 @@ public class SsaScheduleManager {
     }
 
     /**
+     * 引数で渡された予定がすでに予約されている時間と重複していないか確認する
+     * @param newSchedule
+     * @return true 予約されている / false 予約されていない
+     */
+    public boolean isBooking(SsaSchedule newSchedule) {
+        boolean result = false;
+
+        // 全てのリストを確認して開始時間が一緒のものがないことを確認する
+        for(SsaSchedule schedule: mSsaScheduleList) {
+            if(schedule.getStart().equals(newSchedule.getStart())) {
+                // 重複している
+                result = true;
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    /**
      * 引数で渡されたscheduleの10分前通知用scheduleを作成する
      *
      * @param baseSchedule　ベースとするschedule
