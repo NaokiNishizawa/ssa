@@ -37,7 +37,7 @@ public class NotificationUtil {
         createNotificationChannel(context);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.mipmap.ic_launcher)
+                .setSmallIcon(R.mipmap.hiyoko)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setVibrate(new long[]{0, 500, 250, 500, 250})
                 .setLights(Color.GREEN,2000,1000)
