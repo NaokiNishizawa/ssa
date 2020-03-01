@@ -6,6 +6,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Display;
@@ -21,6 +22,7 @@ import android.widget.Toast;
 
 import com.study.ssa.R;
 import com.study.ssa.SsaSchedule.SsaSchedule;
+import com.study.ssa.Util.SharedPreferencesUtil;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -181,9 +183,22 @@ public class TimeSettingsDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // 開始する
+                doSound();
                 doStart();
             }
         });
+    }
+
+    /**
+     * ボタン実行時効果音
+     */
+    private void doSound() {
+        if(SharedPreferencesUtil.getSoundEnabled(getContext())) {
+            MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.button);
+            float volume = SharedPreferencesUtil.getSEValue(getContext()) / 100f;
+            mp.setVolume(volume, volume);
+            mp.start();
+        }
     }
 
     /**

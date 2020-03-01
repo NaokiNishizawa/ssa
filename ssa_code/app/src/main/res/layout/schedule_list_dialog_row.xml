@@ -93,7 +93,7 @@
     </LinearLayout>
 
     <!-- Removeボタン -->
-    <Button
+    <com.study.ssa.UI.CustomWidget.ClickSoundButton
         android:id="@+id/remove_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

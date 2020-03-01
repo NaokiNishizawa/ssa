@@ -5,6 +5,7 @@ import android.content.Context;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -220,9 +221,22 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
             @Override
             public void onClick(View v) {
                 // リタイア
+                doSound();
                 getDialog().dismiss();
             }
         });
+    }
+
+    /**
+     * ボタン実行時効果音
+     */
+    private void doSound() {
+        if(SharedPreferencesUtil.getSoundEnabled(getContext())) {
+            MediaPlayer mp = MediaPlayer.create(getContext(), R.raw.button);
+            float volume = SharedPreferencesUtil.getSEValue(getContext()) / 100f;
+            mp.setVolume(volume, volume);
+            mp.start();
+        }
     }
 
     /**
@@ -295,12 +309,15 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
             mHandler.post(new Runnable() {
                 public void run() {
 
+                    // 20200301仕様変更: 画面OFFでも継続することとなった
+                    /*
                     // 画面を意図的にOFFにされていないかを確認する
                     if(!mPowerManager.isInteractive()) {
                         // 意図的(電源ボタン押下など)に画面をOFFしている
                         getDialog().dismiss();
                         return;
                     }
+                    */
 
                     mCount++;
                     if(FIFTEENTH_COUNT == mCount) {
