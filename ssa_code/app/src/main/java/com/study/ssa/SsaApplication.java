@@ -17,8 +17,6 @@ public class SsaApplication extends Application {
         Log.d("debug", "create application");
         super.onCreate();
 
-        SharedPreferencesUtil.addMoneyValue(getApplicationContext(), 10000); // TODO debug
-
         CharacterInfoManager manager = CharacterInfoManager.getInstance();
         // 初期化しておく
         manager.init(getApplicationContext());
