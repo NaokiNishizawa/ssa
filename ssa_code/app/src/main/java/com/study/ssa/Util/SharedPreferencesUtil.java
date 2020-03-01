@@ -16,6 +16,9 @@ public class SharedPreferencesUtil {
     private static final String KEY_BUY_CHARACTER = "BuyCharacter";
     private static final String KEY_MONEY = "Money";
     private static final String KEY_APP_VERSION = "AppVersion";
+    private static final String KEY_SOUND_ENABLED = "SoundEnabled";
+    private static final String KEY_BGM_VALUE = "BGMValue";
+    private static final String KEY_SE_VALUE = "SEValue";
 
     /**
      * 取得金額の値を保存する
@@ -160,4 +163,73 @@ public class SharedPreferencesUtil {
         return data.getString(KEY_BUY_CHARACTER, "");
     }
 
+    /**
+     * Soundの有効・無効を保存する
+     *
+     * @param context
+     * @param isEnabled 有効・無効
+     */
+    public static void setSoundEnabled(Context context, boolean isEnabled) {
+        SharedPreferences data  = context.getSharedPreferences(KEY_DATA_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = data.edit();
+        editor.putBoolean(KEY_SOUND_ENABLED, isEnabled);
+        editor.apply();
+    }
+
+    /**
+     * Soundの有効・無効を取得する
+     *
+     * @param context
+     * @return true 有効 / false 無効
+     */
+    public static boolean getSoundEnabled(Context context) {
+        SharedPreferences data = context.getSharedPreferences(KEY_DATA_NAME, Context.MODE_PRIVATE);
+        return data.getBoolean(KEY_SOUND_ENABLED, false);
+    }
+
+    /**
+     * BGMの値を保存する
+     *
+     * @param context
+     * @param value
+     */
+    public static void setBGMValue(Context context, int value) {
+        SharedPreferences data = context.getSharedPreferences(KEY_DATA_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = data.edit();
+        editor.putInt(KEY_BGM_VALUE, value);
+        editor.apply();
+    }
+
+    /**
+     * BGMの値を取得する
+     * @param context
+     * @return BGMの値
+     */
+    public static int getBGMValue(Context context) {
+        SharedPreferences data = context.getSharedPreferences(KEY_DATA_NAME, Context.MODE_PRIVATE);
+        return data.getInt(KEY_BGM_VALUE, 50);
+    }
+
+    /**
+     * SEの値を保存する
+     *
+     * @param context
+     * @param value
+     */
+    public static void setSEValue(Context context, int value) {
+        SharedPreferences data = context.getSharedPreferences(KEY_DATA_NAME, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = data.edit();
+        editor.putInt(KEY_SE_VALUE, value);
+        editor.apply();
+    }
+
+    /**
+     * SEの値を取得する
+     * @param context
+     * @return SEの値
+     */
+    public static int getSEValue(Context context) {
+        SharedPreferences data = context.getSharedPreferences(KEY_DATA_NAME, Context.MODE_PRIVATE);
+        return data.getInt(KEY_SE_VALUE, 50);
+    }
 }

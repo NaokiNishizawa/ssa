@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/option_dialog_base_layout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:background="@mipmap/skt_dialog">
+
+        <!-- 一段目 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:layout_marginLeft="@dimen/dauble_large_margin"
+            android:layout_marginRight="@dimen/dauble_large_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_normal_size"
+                android:text="@string/option_sound"
+                android:textColor="@color/colorBlack"/>
+
+            <Switch
+                android:id="@+id/option_sound_toggle_switch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/normal_margin"
+                android:layout_gravity="center"/>
+        </LinearLayout>
+
+        <!-- 二段目 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/dauble_large_margin"
+            android:layout_marginRight="@dimen/dauble_large_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_normal_size"
+                android:text="@string/option_bgm"
+                android:textColor="@color/colorBlack"/>
+
+            <SeekBar
+                android:id="@+id/option_bgm_seekbar"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/seekbar_width"
+                android:layout_height="wrap_content"
+                android:max="100"/>
+
+        </LinearLayout>
+
+        <!-- 三段目 -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/normal_margin"
+            android:layout_marginLeft="@dimen/dauble_large_margin"
+            android:layout_marginRight="@dimen/dauble_large_margin"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="@dimen/text_normal_size"
+                android:text="@string/option_se"
+                android:textColor="@color/colorBlack"/>
+
+            <SeekBar
+                android:id="@+id/option_se_seekbar"
+                android:layout_gravity="center"
+                android:layout_width="@dimen/seekbar_width"
+                android:layout_height="wrap_content"
+                android:max="100"/>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/option_apply_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/option_apply"
+            android:layout_gravity="center"
+            android:background="@mipmap/buy_bt"
+            android:textColor="@color/colorWhite"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <com.study.ssa.UI.CustomWidget.EqualWidthHeightTextView
+            android:id="@+id/option_dialog_cancel_button"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:layout_gravity="right"
+            android:background="@drawable/oval_red_bg"
+            android:textColor="@color/colorWhite"
+            android:text="x"
+            android:textSize="@dimen/text_normal_size"
+            android:textStyle="bold"/>
+
+    </LinearLayout>
+
+</FrameLayout>

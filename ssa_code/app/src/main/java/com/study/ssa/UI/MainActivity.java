@@ -25,6 +25,7 @@ import com.study.ssa.UI.Adapter.CalendarAdapter;
 import com.study.ssa.UI.Dialog.BaseTimerDialogFragment;
 import com.study.ssa.UI.Dialog.CountDownTimerDialogFragment;
 import com.study.ssa.UI.Dialog.CountUpTimerDialogFragment;
+import com.study.ssa.UI.Dialog.OptionDialogFragment;
 import com.study.ssa.UI.Dialog.RegisterDialogFragment;
 import com.study.ssa.UI.Dialog.ScheduleListDialogFragment;
 import com.study.ssa.UI.Dialog.TimeSettingsDialogFragment;
@@ -42,7 +43,9 @@ import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends FragmentActivity
         implements RegisterDialogFragment.OnButtonClickListener, ScheduleListDialogFragment.onScheduleListDialogListener,
-        BaseTimerDialogFragment.OnFinishClickListener, TimeSettingsDialogFragment.OnFinishClickListener {
+        BaseTimerDialogFragment.OnFinishClickListener, TimeSettingsDialogFragment.OnFinishClickListener,
+        OptionDialogFragment.OnButtonClickListener
+{
 
     private TextView mGetMoneyText;
 
@@ -149,6 +152,15 @@ public class MainActivity extends FragmentActivity
      */
     private void initLayout() {
 
+        Button option = findViewById(R.id.option_button);
+        option.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                // オプションダイアログ表示
+                showOptionDialog();
+            }
+        });
+
         mGetMoneyText = findViewById(R.id.shojicoin_text);
         mGetMoneyText.setText(String.valueOf(SharedPreferencesUtil.getMoneyValue(this)) + getString(R.string.get_money));
 
@@ -234,6 +246,15 @@ public class MainActivity extends FragmentActivity
                 startActivity(intent);
             }
         });
+    }
+
+    /**
+     * オプションダイアログ表示処理
+     */
+    private void showOptionDialog() {
+        FragmentManager manager = getSupportFragmentManager();
+        OptionDialogFragment dialogFragment = new OptionDialogFragment();
+        dialogFragment.show(manager, "");
     }
 
     /**
@@ -392,5 +413,13 @@ public class MainActivity extends FragmentActivity
         // 獲得金額を更新
         int money = SharedPreferencesUtil.getMoneyValue(this);
         mGetMoneyText.setText(String.valueOf(money) + getString(R.string.get_money));
+    }
+
+    // OptionDialogコールバック
+    @Override
+    public void onSettingFinish() {
+        Log.d("debug", "call onSettingFinish");
+        // TODO BGMの設定を変更する
+
     }
 }
