@@ -28,64 +28,78 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/display_schedule_date_text"
+            <ScrollView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/normal_margin"
-                android:textColor="@color/colorBlack"
-                android:textSize="@dimen/text_normal_size"/>
+                android:layout_height="match_parent">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/display_schedule_date_scope"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/colorBlue"
-                    android:textSize="@dimen/text_little_large_size"/>
+                    <TextView
+                        android:id="@+id/display_schedule_date_text"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/normal_margin"
+                        android:textColor="@color/colorBlack"
+                        android:textSize="@dimen/text_normal_size"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="にかけて"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_normal_size"/>
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:gravity="center">
+                        <TextView
+                            android:id="@+id/display_schedule_date_scope"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/colorBlue"
+                            android:textSize="@dimen/text_little_large_size"/>
 
-                <TextView
-                    android:id="@+id/display_schedule_date_content"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text=""
-                    android:textColor="@color/colorRed"
-                    android:textSize="@dimen/text_little_large_size"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="にかけて"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_normal_size"/>
+                    </LinearLayout>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="の予定があります。"
-                    android:textColor="@color/colorBlack"
-                    android:textSize="@dimen/text_normal_size"/>
-            </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center">
 
-            <TextView
-                android:id="@+id/display_schedule_date_mode"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text=""
-                android:gravity="right"
-                android:textColor="@color/colorBlue"
-                android:textSize="@dimen/text_normal_size"/>
+                        <TextView
+                            android:id="@+id/display_schedule_date_content"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text=""
+                            android:textColor="@color/colorRed"
+                            android:textSize="@dimen/text_little_large_size"/>
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="の予定があります。"
+                            android:textColor="@color/colorBlack"
+                            android:textSize="@dimen/text_normal_size"/>
+                    </LinearLayout>
+
+                    <TextView
+                        android:id="@+id/display_schedule_date_mode"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text=""
+                        android:gravity="right"
+                        android:textColor="@color/colorBlue"
+                        android:textSize="@dimen/text_normal_size"/>
+
+
+                </LinearLayout>
+
+            </ScrollView>
         </LinearLayout>
 
     </LinearLayout>

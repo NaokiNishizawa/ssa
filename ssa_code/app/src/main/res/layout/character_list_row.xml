@@ -20,7 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="45dp"
-            android:layout_marginLeft="30dp"
+            android:layout_marginLeft="15dp"
             android:text="hogehoge"
             android:textColor="@color/colorBlack"
             android:textSize="@dimen/small_text_size"
@@ -63,7 +63,6 @@
             android:src="@mipmap/hituji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="@dimen/dauble_large_margin"
             android:layout_centerVertical="true"
             android:layout_toRightOf="@+id/character_buy"/>
 

@@ -74,7 +74,7 @@
                 android:text="0"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:layout_marginLeft="@dimen/normal_margin"
+                android:layout_marginLeft="@dimen/large_margin"
                 android:textSize="@dimen/small_text_size"
                 android:textColor="@color/colorWhite"/>
 
