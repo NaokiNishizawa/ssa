@@ -3,6 +3,7 @@ package com.study.ssa.UI;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -31,6 +32,8 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
     private CharacterInfoManager mManager;
     private CharacterListAdapter mAdapter;
 
+    private MediaPlayer mMediaPlayer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,6 +41,19 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
 
         // 初期化
         init();
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        initMediaPlayer();
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMediaPlayer.pause();
+        mMediaPlayer.release();
     }
 
     /**
@@ -96,6 +112,24 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
                 onBackPressed();
             }
         });
+    }
+
+    /**
+     * MediaPlayerの初期化
+     */
+    private void initMediaPlayer() {
+        mMediaPlayer = MediaPlayer.create(this, R.raw.shop);
+
+        if(!SharedPreferencesUtil.getSoundEnabled(this)) {
+            // 音楽無効時は何もしない
+            return;
+        }
+
+        mMediaPlayer.setLooping(true);
+
+        float volume = SharedPreferencesUtil.getBGMValue(this) / 100f;
+        mMediaPlayer.setVolume(volume, volume);
+        mMediaPlayer.start();
     }
 
     /**

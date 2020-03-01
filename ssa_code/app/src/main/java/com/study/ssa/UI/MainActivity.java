@@ -3,6 +3,7 @@ package com.study.ssa.UI;
 import android.content.ComponentName;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -35,7 +36,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import androidx.fragment.app.FragmentActivity;
@@ -68,6 +68,8 @@ public class MainActivity extends FragmentActivity
 
     /** 表示中 TimerDialog */
     private BaseTimerDialogFragment mTimerDialog = null;
+
+    private MediaPlayer mMediaPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -105,6 +107,9 @@ public class MainActivity extends FragmentActivity
         // ヘッダーView群の初期化
         initHeaderView();
 
+        // MediaPlayerの初期化
+        initMediaPlayer();
+
         // Receiverから呼ばれた場合はすぐにタイマーモードに遷移する
         if(mIsCalledReceiver) {
             // タイマーモード起動
@@ -112,6 +117,13 @@ public class MainActivity extends FragmentActivity
             SsaSchedule schedule = (SsaSchedule) getIntent().getSerializableExtra(AlarmReceiver.KEY_SCHEDULE_OBJECT);
             showCountDownTimerDialog(schedule);
         }
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mMediaPlayer.pause();
+        mMediaPlayer.release();
     }
 
     /**
@@ -249,6 +261,42 @@ public class MainActivity extends FragmentActivity
     }
 
     /**
+     * MediaPlayerの初期化
+     */
+    private void initMediaPlayer() {
+
+        mMediaPlayer = MediaPlayer.create(this, R.raw.home);
+        mMediaPlayer.setLooping(true);
+
+        updateMediaPlayer();
+    }
+
+    /**
+     * MediaPlayerの設定の更新
+     */
+    private void updateMediaPlayer() {
+        float volume = SharedPreferencesUtil.getBGMValue(this) / 100f;
+        mMediaPlayer.setVolume(volume, volume);
+
+        if(!SharedPreferencesUtil.getSoundEnabled(this)) {
+            // Soundが無効状態
+            // 再生しない
+            Log.d("debug", "sound is disabled");
+            MuteMediaPlayer();
+        }
+
+        // 再生
+        mMediaPlayer.start();
+    }
+
+    /**
+     * MediaPlayerミュート
+     */
+    private void MuteMediaPlayer() {
+        mMediaPlayer.setVolume(0,0);
+    }
+
+    /**
      * オプションダイアログ表示処理
      */
     private void showOptionDialog() {
@@ -273,6 +321,9 @@ public class MainActivity extends FragmentActivity
 
         // 表示
         dialogFragment.show(manager, "");
+
+        // BGMを消す
+        MuteMediaPlayer();
     }
 
     /**
@@ -308,6 +359,9 @@ public class MainActivity extends FragmentActivity
 
         // 表示
         dialogFragment.show(manager, "");
+
+        // BGMを消す
+        MuteMediaPlayer();
     }
 
     /**
@@ -318,6 +372,9 @@ public class MainActivity extends FragmentActivity
         TimeSettingsDialogFragment dialogFragment = new TimeSettingsDialogFragment();
 
         dialogFragment.show(manager, "");
+
+        // BGMを消す
+        MuteMediaPlayer();
     }
 
     /**
@@ -347,6 +404,9 @@ public class MainActivity extends FragmentActivity
         mTimerDialog.setArguments(args);
 
         mTimerDialog.show(manager, "");
+
+        // BGMを消す
+        MuteMediaPlayer();
     }
 
     /**
@@ -390,6 +450,9 @@ public class MainActivity extends FragmentActivity
 
         // 直近の予定表示Fragmentを更新
         mDisplayFragment.updateLayout();
+
+        // BGMを再スタート
+        updateMediaPlayer();
     }
 
     // TimeSettingDialog コールバック
@@ -413,13 +476,16 @@ public class MainActivity extends FragmentActivity
         // 獲得金額を更新
         int money = SharedPreferencesUtil.getMoneyValue(this);
         mGetMoneyText.setText(String.valueOf(money) + getString(R.string.get_money));
+
+        // BGMを再スタート
+        updateMediaPlayer();
     }
 
     // OptionDialogコールバック
     @Override
     public void onSettingFinish() {
         Log.d("debug", "call onSettingFinish");
-        // TODO BGMの設定を変更する
-
+        // BGMの設定を変更する
+        updateMediaPlayer();
     }
 }

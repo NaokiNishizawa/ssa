@@ -57,8 +57,7 @@ public class AlarmReceiver extends BroadcastReceiver {
                 Log.d("debug", "SCREEN_ON");
 
                 // 必要な情報を詰める
-                Intent startIntent =new Intent();
-                startIntent.setClassName(context.getPackageName(), context.getPackageName() + ".MainActivity");
+                Intent startIntent =new Intent("com.study.ssa.action.START_MAIN");
                 startIntent.putExtra(KEY_CALLED_RECEIVER, CALLED_RECEIVER);
                 startIntent.putExtra(KEY_SCHEDULE_OBJECT, schedule);
 
