@@ -184,7 +184,7 @@ public class SharedPreferencesUtil {
      */
     public static boolean getSoundEnabled(Context context) {
         SharedPreferences data = context.getSharedPreferences(KEY_DATA_NAME, Context.MODE_PRIVATE);
-        return data.getBoolean(KEY_SOUND_ENABLED, false);
+        return data.getBoolean(KEY_SOUND_ENABLED, true);
     }
 
     /**

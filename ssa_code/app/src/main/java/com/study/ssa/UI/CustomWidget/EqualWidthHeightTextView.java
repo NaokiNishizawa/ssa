@@ -2,7 +2,6 @@ package com.study.ssa.UI.CustomWidget;
 
 import android.content.Context;
 import android.util.AttributeSet;
-import android.widget.TextView;
 import androidx.appcompat.widget.AppCompatTextView;
 
 

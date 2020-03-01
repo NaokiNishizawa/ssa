@@ -175,6 +175,7 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
                 return;
             }
         } else {
+            doSound(R.raw.button);
             updateUI(info);
         }
     }
@@ -214,6 +215,7 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
                 SharedPreferencesUtil.decreaseMoneyValue(getApplicationContext(), info.getPrice());
                 setGetMoney();
 
+                doSound(R.raw.coin);
                 updateUI(info);
             }
         });
@@ -240,5 +242,19 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
         mAdapter.notifyDataSetChanged();
 
         setSelectedCharacterNameText();
+    }
+
+    /**
+     * ボタン実行サウンドの実行
+     *
+     * @param soundId
+     */
+    private void doSound(int soundId) {
+        if(SharedPreferencesUtil.getSoundEnabled(this)) {
+            MediaPlayer mp = MediaPlayer.create(this, soundId);
+            float volume = SharedPreferencesUtil.getSEValue(this) / 100f;
+            mp.setVolume(volume, volume);
+            mp.start();
+        }
     }
 }
