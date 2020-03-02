@@ -3,6 +3,7 @@ package com.study.ssa.UI.Dialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -38,6 +39,7 @@ public class RegisterDialogFragment extends DialogFragment {
 
     public interface OnButtonClickListener {
         public void onRegisterButtonClick();
+        public void onRegisterDialogCancel();
     }
 
     public static final String KEY_SELECT_DAY = "select_day";
@@ -46,7 +48,7 @@ public class RegisterDialogFragment extends DialogFragment {
     private String mRegisterDayStr;
     private SsaSchedule mSchedule; // 予定データ保持クラス
     private boolean mIsNotificationTenMin = false; // 10分前に通知するかを表すflag
-    private OnButtonClickListener mOnDialogButtonClickListener;
+    private OnButtonClickListener mListener;
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -72,7 +74,7 @@ public class RegisterDialogFragment extends DialogFragment {
         super.onAttach(context);
 
         try {
-            this.mOnDialogButtonClickListener = (OnButtonClickListener) getActivity();
+            this.mListener = (OnButtonClickListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -98,6 +100,21 @@ public class RegisterDialogFragment extends DialogFragment {
 
         // 登録ボタン
         initRegisterButton();
+    }
+
+    @Override
+    public void onDetach () {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+
+        if(null != mListener) {
+            mListener.onRegisterDialogCancel();
+        }
     }
 
     /**
@@ -330,7 +347,7 @@ public class RegisterDialogFragment extends DialogFragment {
 
                 manager.addScheduleAndReadDB(getContext(), mSchedule);
 
-                mOnDialogButtonClickListener.onRegisterButtonClick();
+                mListener.onRegisterButtonClick();
                 getDialog().dismiss();
             }
         });

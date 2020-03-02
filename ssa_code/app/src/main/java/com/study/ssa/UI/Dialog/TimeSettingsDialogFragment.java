@@ -3,6 +3,7 @@ package com.study.ssa.UI.Dialog;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.ColorDrawable;
@@ -45,6 +46,7 @@ public class TimeSettingsDialogFragment extends DialogFragment {
 
     public interface OnFinishClickListener {
         public void onCompleteTimerSettings(SsaSchedule schedule);
+        public void onTimerSettingsDialogCancel();
     }
 
     @Override
@@ -91,6 +93,21 @@ public class TimeSettingsDialogFragment extends DialogFragment {
         initEndText();
 
         initStartButton();
+    }
+
+    @Override
+    public void onDetach () {
+        super.onDetach();
+        mListener = null;
+    }
+
+    @Override
+    public void onCancel(DialogInterface dialog) {
+        super.onCancel(dialog);
+
+        if(null != mListener) {
+            mListener.onTimerSettingsDialogCancel();
+        }
     }
 
     /**

@@ -43,7 +43,7 @@ import androidx.fragment.app.FragmentManager;
 
 public class MainActivity extends FragmentActivity
         implements RegisterDialogFragment.OnButtonClickListener, ScheduleListDialogFragment.onScheduleListDialogListener,
-        BaseTimerDialogFragment.OnFinishClickListener, TimeSettingsDialogFragment.OnFinishClickListener,
+        BaseTimerDialogFragment.OnBaseTimerDialogFragmentListener, TimeSettingsDialogFragment.OnFinishClickListener,
         OptionDialogFragment.OnButtonClickListener
 {
 
@@ -404,9 +404,6 @@ public class MainActivity extends FragmentActivity
         mTimerDialog.setArguments(args);
 
         mTimerDialog.show(manager, "");
-
-        // BGMを消す
-        MuteMediaPlayer();
     }
 
     /**
@@ -431,9 +428,15 @@ public class MainActivity extends FragmentActivity
         updateView();
     }
 
+    @Override
+    public void onRegisterDialogCancel() {
+        // BGMを再スタート
+        updateMediaPlayer();
+    }
+
     // ScheduleListDialog　コールバック
     @Override
-    public void onDismiss() {
+    public void onScheduleListDialogDismiss() {
         updateView();
     }
 
@@ -462,9 +465,23 @@ public class MainActivity extends FragmentActivity
         showCountDownTimerDialog(schedule);
     }
 
+    @Override
+    public void onTimerSettingsDialogCancel() {
+        Log.d("debug", "call onTimerSettingsDialogCancel");
+        // BGMを再スタート
+        updateMediaPlayer();
+    }
+
     // TimerDialog　コールバック
     @Override
-    public void onFinish(int getMoney) {
+    public void onTimerDialogStart() {
+        Log.d("debug", "call onTimerDialogStart");
+        // BGMを消す
+        MuteMediaPlayer();
+    }
+
+    @Override
+    public void onTimerDialogFinish(int getMoney) {
 
         // ダイアログは処理し終えたので初期化
         mIsCalledReceiver = false;

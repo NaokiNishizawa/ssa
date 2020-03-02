@@ -49,14 +49,15 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
     private TextView mGetMoneyText;
 
     private  int mProgressRate;
-    private OnFinishClickListener mListener;
+    private OnBaseTimerDialogFragmentListener mListener;
 
     protected TextView mTimeText;
     protected ChartView mChartView;
     protected TextView mProgressRateText;
 
-    public interface OnFinishClickListener {
-        public void onFinish(int getMoney);
+    public interface OnBaseTimerDialogFragmentListener {
+        public void onTimerDialogStart();
+        public void onTimerDialogFinish(int getMoney);
     }
 
     @Override
@@ -83,7 +84,7 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
         super.onAttach(context);
 
         try {
-            this.mListener = (BaseTimerDialogFragment.OnFinishClickListener) getActivity();
+            this.mListener = (OnBaseTimerDialogFragmentListener) getActivity();
         } catch (ClassCastException e) {
             e.printStackTrace();
         }
@@ -109,6 +110,10 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
         initChildLayout();
 
         startCount();
+
+        if(null != mListener) {
+            mListener.onTimerDialogStart();
+        }
     }
 
     @Override
@@ -128,8 +133,9 @@ public abstract class BaseTimerDialogFragment extends DialogFragment {
     public void onDetach () {
         super.onDetach();
         if(null != mListener) {
-            mListener.onFinish(mGetMoney);
+            mListener.onTimerDialogFinish(mGetMoney);
         }
+        mListener = null;
     }
 
     /**

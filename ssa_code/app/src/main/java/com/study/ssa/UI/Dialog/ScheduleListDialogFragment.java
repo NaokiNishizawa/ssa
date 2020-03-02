@@ -1,6 +1,5 @@
 package com.study.ssa.UI.Dialog;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Color;
@@ -34,7 +33,7 @@ import androidx.recyclerview.widget.RecyclerView;
 public class ScheduleListDialogFragment extends DialogFragment implements ScheduleListAdapter.onRemoveScheduleListener{
 
     public interface onScheduleListDialogListener {
-        public void onDismiss();
+        public void onScheduleListDialogDismiss();
     }
 
     public static final String KEY_DAY = "day";
@@ -110,7 +109,10 @@ public class ScheduleListDialogFragment extends DialogFragment implements Schedu
         // 最後にReadDBする
         mManager.ReadDB(getContext());
 
-        mListener.onDismiss();
+        if(null != mListener) {
+            mListener.onScheduleListDialogDismiss();
+        }
+        mListener = null;
     }
 
     /**
