@@ -80,6 +80,36 @@ public class SsaScheduleManager {
     }
 
     /**
+     * 引数で渡された予定が現在時刻よりも古い予定かどうかを確認する
+     *
+     * @param schedule
+     * @return true 古い予定 / false 未来の予定
+     */
+    public boolean isOldSchedule(SsaSchedule schedule) {
+        boolean result = false;
+
+        // 本来はDateクラスのcompareToで比較したいが、現在時刻より過去のものも1を返すため自力で比較している
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
+        String currentTimeStr = sf.format(Calendar.getInstance().getTime());
+        String[] currentTimeList = currentTimeStr.split(" ")[1].split(":");
+        String[] scheduleStartDateList = schedule.getStart().split(" ")[1].split(":");
+
+        if(Integer.valueOf(currentTimeList[0]) < Integer.valueOf(scheduleStartDateList[0])) {
+            // 本日の予定でも未来の予定
+            result = false;
+        } else if((Integer.valueOf(currentTimeList[0]) == Integer.valueOf(scheduleStartDateList[0])) &&
+                (Integer.valueOf(currentTimeList[1]) <= Integer.valueOf(scheduleStartDateList[1]))){
+            // 本日の予定でも未来の予定
+            result = false;
+        } else {
+            // 古いデータのためDBへの削除処理
+            result = true;
+        }
+
+        return result;
+    }
+
+    /**
      * 引数で渡されたscheduleの10分前通知用scheduleを作成する
      *
      * @param baseSchedule　ベースとするschedule
@@ -567,23 +597,12 @@ public class SsaScheduleManager {
                     deleteSchedule(context, schedule);
                 } else if (0 == scheduleDate.compareTo(today)) {
                     // 本日の予定の場合は、開始時間が現在時刻よりも古い場合は削除
-                    // 本来はDateクラスのcompareToで比較したいが、現在時刻より過去のものも1を返すため自力で比較している
-
-                    SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd HH:mm", Locale.US);
-                    String currentTimeStr = sf.format(Calendar.getInstance().getTime());
-                    String[] currentTimeList = currentTimeStr.split(" ")[1].split(":");
-                    String[] scheduleStartDateList = schedule.getStart().split(" ")[1].split(":");
-
-                    if(Integer.valueOf(currentTimeList[0]) < Integer.valueOf(scheduleStartDateList[0])) {
-                        // 本日の予定でも未来の予定
-                        futureScheduleList.add(schedule);
-                    } else if((Integer.valueOf(currentTimeList[0]) == Integer.valueOf(scheduleStartDateList[0])) &&
-                            (Integer.valueOf(currentTimeList[1]) <= Integer.valueOf(scheduleStartDateList[1]))){
-                        // 本日の予定でも未来の予定
-                        futureScheduleList.add(schedule);
-                    } else {
+                    if(isOldSchedule(schedule)) {
                         // 古いデータのためDBへの削除処理
                         deleteSchedule(context, schedule);
+                    } else {
+                        // 本日の予定でも未来の予定
+                        futureScheduleList.add(schedule);
                     }
                 } else {
                     // 未来の予定

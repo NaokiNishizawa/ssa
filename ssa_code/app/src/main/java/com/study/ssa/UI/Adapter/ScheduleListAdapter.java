@@ -104,8 +104,16 @@ public class ScheduleListAdapter extends RecyclerView.Adapter<ScheduleListViewHo
                                     return;
                                 }
 
-                                // 重複していないか確認する
                                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
+
+                                // 現在時刻より新しい時間かを確認する
+                                if(manager.isOldSchedule(confirmSchedule)) {
+                                    // 古い予定のため、登録時間が正しくない旨のメッセージを表示して、保存も何もしない
+                                    Toast.makeText(mContext, mContext.getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                                    return;
+                                }
+
+                                // 重複していないか確認する
                                 if(manager.isBooking(confirmSchedule)) {
                                     // 重複しているため、その旨を通知して保存も何もしない
                                     Toast.makeText(mContext, mContext.getString(R.string.error_booking_schedule), Toast.LENGTH_LONG).show();

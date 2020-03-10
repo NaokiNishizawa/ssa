@@ -330,6 +330,13 @@ public class RegisterDialogFragment extends DialogFragment {
 
                 SsaScheduleManager manager = SsaScheduleManager.getInstance();
 
+                // 現在時刻より新しい時間かを確認する
+                if(manager.isOldSchedule(mSchedule)) {
+                    // 古い予定のため、登録時間が正しくない旨のメッセージを表示して、保存も何もしない
+                    Toast.makeText(getContext(), getString(R.string.error_time), Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 // 開始時刻が重複していないか確認する
                  if(manager.isBooking(mSchedule)) {
                      // 重複しているため、その旨を通知して保存も何もしない
