@@ -3,6 +3,7 @@ package com.study.ssa.UI;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.media.MediaPlayer;
 import android.os.Bundle;
 import android.view.View;
@@ -109,6 +110,9 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
             @Override
             public void onClick(View view) {
                 // Activityを終了する
+                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                startActivity(intent);
                 finish();
             }
         });
