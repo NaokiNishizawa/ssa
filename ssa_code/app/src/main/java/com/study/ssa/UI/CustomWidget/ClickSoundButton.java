@@ -28,34 +28,7 @@ public class ClickSoundButton extends BarrageGuardButton {
     public ClickSoundButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
     }
-/*
-    @Override
-    public boolean dispatchTouchEvent(MotionEvent ev) {
-        if (ev.getAction() == MotionEvent.ACTION_UP) {
-            if (mListener != null) {
-                postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        mListener.onClick(ClickSoundButton.this);
-                    }
-                },100);
-
-                if(SharedPreferencesUtil.getSoundEnabled(mContext)) {
-                    if(0 != mSoundId) {
-                        // ClickSoundを発生させる
-                        MediaPlayer mp = MediaPlayer.create(mContext, mSoundId);
-                        float volume = SharedPreferencesUtil.getSEValue(mContext) / 100f;
-                        mp.setVolume(volume, volume);
-                        mp.start();
-                    }
-                }
-            }
-        }
-
-        return super.dispatchTouchEvent(ev);
-    }
-    */
-
+    
     @Override
     protected void clickAction() {
         if (mListener != null) {
