@@ -278,13 +278,15 @@ public class MainActivity extends FragmentActivity
      */
     private void updateMediaPlayer() {
         float volume = SharedPreferencesUtil.getBGMValue(this) / 100f;
-        mMediaPlayer.setVolume(volume, volume);
+        if(null != mMediaPlayer) {
+            mMediaPlayer.setVolume(volume, volume);
 
-        if(!SharedPreferencesUtil.getSoundEnabled(this)) {
-            // Soundが無効状態
-            // 再生しない
-            Log.d("debug", "sound is disabled");
-            MuteMediaPlayer();
+            if(!SharedPreferencesUtil.getSoundEnabled(this)) {
+                // Soundが無効状態
+                // 再生しない
+                Log.d("debug", "sound is disabled");
+                MuteMediaPlayer();
+            }
         }
     }
 
