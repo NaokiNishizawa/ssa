@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.media.MediaPlayer;
 import android.os.Bundle;
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -54,6 +53,7 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
         super.onPause();
         mMediaPlayer.pause();
         mMediaPlayer.release();
+        mMediaPlayer = null;
     }
 
     /**
@@ -108,8 +108,8 @@ public class ShopActivity extends Activity implements CharacterListAdapter.onCli
         home.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // バックボタンを押したこととする
-                onBackPressed();
+                // Activityを終了する
+                finish();
             }
         });
     }

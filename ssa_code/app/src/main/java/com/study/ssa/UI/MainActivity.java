@@ -124,6 +124,7 @@ public class MainActivity extends FragmentActivity
         super.onPause();
         mMediaPlayer.pause();
         mMediaPlayer.release();
+        mMediaPlayer = null;
     }
 
     /**
@@ -267,8 +268,9 @@ public class MainActivity extends FragmentActivity
 
         mMediaPlayer = MediaPlayer.create(this, R.raw.home);
         mMediaPlayer.setLooping(true);
-
-        updateMediaPlayer();
+        float volume = SharedPreferencesUtil.getBGMValue(this) / 100f;
+        mMediaPlayer.setVolume(volume, volume);
+        mMediaPlayer.start();
     }
 
     /**
@@ -284,9 +286,6 @@ public class MainActivity extends FragmentActivity
             Log.d("debug", "sound is disabled");
             MuteMediaPlayer();
         }
-
-        // 再生
-        mMediaPlayer.start();
     }
 
     /**
