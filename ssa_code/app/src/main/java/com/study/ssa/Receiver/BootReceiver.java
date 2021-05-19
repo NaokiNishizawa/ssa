@@ -3,6 +3,7 @@ package com.study.ssa.Receiver;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.study.ssa.Util.AlarmManagerUtil;
 import com.study.ssa.SsaSchedule.SsaSchedule;
@@ -17,6 +18,8 @@ import java.util.List;
 public class BootReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
+        Log.d("debug", "call ssa BootReceiver");
+
         // 再起動時はアラームを再設定
         SsaScheduleManager manager = SsaScheduleManager.getInstance();
         manager.init(context);

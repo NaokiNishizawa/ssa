@@ -35,9 +35,13 @@
             android:process=":remote"/>
 
         <receiver android:name=".Receiver.BootReceiver"
-            android:enabled="false">
+            android:directBootAware="true"
+            android:exported="true"
+            android:enabled="true">
             <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED"/>
                 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <action android:name="android.intent.action.QUICKBOOT_POWERON" />
             </intent-filter>
         </receiver>
 

@@ -111,16 +111,17 @@ public class RegisterDialogFragment extends DialogFragment {
     @Override
     public void onCancel(DialogInterface dialog) {
         super.onCancel(dialog);
-
         if(null != mListener) {
             mListener.onRegisterDialogCancel();
         }
+
+
     }
 
     /**
      * データ保持クラス初期化
      */
-    private void initSchedule() {
+    private void initSchedule () {
         mSchedule = new SsaSchedule();
         mSchedule.setSchedule(mRegisterDayStr);
     }
